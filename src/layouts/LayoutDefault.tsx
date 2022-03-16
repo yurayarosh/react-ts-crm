@@ -2,6 +2,7 @@ import { FC } from 'react'
 import classNames from 'classnames'
 import { useAppSelector } from '../hooks/store'
 import Navbar from '../components/Navbar/Navbar'
+import Aside from '../components/Aside/Aside'
 
 const LayoutDafault: FC = ({ children }) => {
   const asideIsOpen = useAppSelector(state => state.asideReducer.isOpen)
@@ -10,7 +11,7 @@ const LayoutDafault: FC = ({ children }) => {
     <div className="app-main-layout">
       <Navbar />
 
-      {/* <v-aside /> */}
+      <Aside />
 
       <main className={classNames('app-content', { full: !asideIsOpen })}>
         <div className="app-page">{/* <router-view></router-view> */}</div>
