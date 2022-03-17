@@ -1,13 +1,8 @@
-
 import './App.css'
-import LayoutDafault from './layouts/LayoutDefault'
+import AppRouter from './components/AppRouter/AppRouter'
 
 function App() {
-  return (
-    <LayoutDafault>
-      this is content
-    </LayoutDafault>
-  )
+  return <AppRouter />
 }
 
 export default App

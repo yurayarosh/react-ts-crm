@@ -14,7 +14,7 @@ const LayoutDafault: FC = ({ children }) => {
       <Aside />
 
       <main className={classNames('app-content', { full: !asideIsOpen })}>
-        <div className="app-page">{/* <router-view></router-view> */}</div>
+        <div className="app-page">{children}</div>
       </main>
 
       <div className="fixed-action-btn">
