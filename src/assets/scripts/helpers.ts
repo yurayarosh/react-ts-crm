@@ -19,3 +19,5 @@ export const filterDate = (value: Date, format: String = '') => {
 
   return new Intl.DateTimeFormat('uk-UA', options).format(value)
 }
+
+export const UID = () => `uid-${Math.random().toString(36).slice(2, 9)}`
