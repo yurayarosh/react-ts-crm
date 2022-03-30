@@ -1,6 +1,7 @@
 import { ComponentType, Key } from 'react'
 import Home from '../pages/Home/Home'
 import Login from '../pages/Login/Login'
+import Register from '../pages/Register/Register'
 
 export interface IRoute {
   path: string
@@ -26,6 +27,10 @@ export const publicRoutes: IRoute[] = [
   {
     path: RouteNames.LOGIN,
     Component: Login,
+  },
+  {
+    path: RouteNames.REGISTER,
+    Component: Register,
   },
 ]
 
