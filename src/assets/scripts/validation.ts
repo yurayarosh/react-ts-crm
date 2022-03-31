@@ -9,7 +9,18 @@ interface IConfig {
 //   config: IConfig
 // }
 
-const simpleInputValidate = ({
+export interface IInputError {
+  error: boolean
+  text?: string | null
+}
+
+export enum ErrorMessages {
+  EMPTY = 'Поле должно быть заполнено',
+  EMAIL = 'Некорректный E-mail',
+  PASSWORD = 'Пароль должен иметь минимальную длинну 8 символов',
+}
+
+export const simpleInputValidate = ({
   val,
   required,
   type = 'text',
@@ -19,39 +30,39 @@ const simpleInputValidate = ({
   required: boolean
   type?: string
   config?: IConfig
-}) => {
+}): IInputError => {
   let error: boolean = false
   let text: string | null = null
 
   // is empty
   if (required && !val.trim().length) {
     error = true
-    // text = translate('empty_field', 'validate');
+    text = ErrorMessages.EMPTY
   }
 
   // email
-  if (required && type == 'email') {
+  if (required && type === 'email') {
     const test_email = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/
-    if (!val.length || val == '' || !test_email.test(val)) {
+    if (!val.length || val === '' || !test_email.test(val)) {
       error = true
-      if (!val.length || val == '') {
-        // text = translate('empty_field', 'validate')
+      if (!val.length || val === '') {
+        text = ErrorMessages.EMPTY
       } else {
-        // text = translate('incorrect_email', 'validate')
+        text = ErrorMessages.EMAIL
       }
     }
   }
 
   // password
-  if (required && type == 'password') {
+  if (required && type === 'password') {
     if (val.length < 8 && val.trim().length) {
       error = true
-      // text = translate('password_min_characters', 'validate')
+      text = ErrorMessages.PASSWORD
     }
   }
 
   // textarea
-  if (required && type == 'textarea') {
+  if (required && config.minLength) {
     const { minLength = 10 } = config
     if (val.length < minLength && val.trim().length) {
       error = true
@@ -61,5 +72,3 @@ const simpleInputValidate = ({
 
   return { error, text }
 }
-
-export default simpleInputValidate

@@ -1,20 +1,75 @@
-import { FC } from 'react'
+import { ChangeEvent, FC, FormEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
 
+
 const Login: FC = () => {
+  const [isFormTouched, setFormTouched] = useState(false)
+  const [emailError, setEmailError] = useState<IInputError>({ error: true })
+  const [passwordError, setPasswordError] = useState<IInputError>({ error: true })
+
+  const onSubmit = (e: FormEvent) => {
+    setFormTouched(true)
+
+    const isValid = !emailError.error && !passwordError.error
+    e.preventDefault()
+
+    if (isValid) {
+      console.log('success')
+    }
+  }
+
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name
+
+    const validation = simpleInputValidate({
+      val: e.target.value,
+      required: true,
+      type: e.target.type,
+    })
+
+    switch (name) {
+      case 'email':
+        setEmailError({
+          error: validation.error,
+          text: validation.text,
+        })
+        break
+      case 'password':
+        setPasswordError({
+          error: validation.error,
+        })
+        break
+    }
+  }
+
   return (
     <LayoutForm>
-      <form className="card auth-card">
+      <form className="card auth-card" onSubmit={onSubmit}>
         <div className="card-content">
           <span className="card-title">Домашняя бухгалтерия</span>
-          <Input type="email" label="Email" hasError={false} />
-          <Input type="password" label="Пароль" hasError={false} />
+          <Input
+            name="email"
+            type="email"
+            label="Email"
+            hasError={isFormTouched && emailError.error}
+            errorMessage={emailError.text}
+            onCustomChange={onInputChange}
+          />
+          <Input
+            name="password"
+            type="password"
+            label="Пароль"
+            hasError={isFormTouched && passwordError.error}
+            errorMessage={passwordError.text}
+            onCustomChange={onInputChange}
+          />
         </div>
-        
+
         <div className="card-action">
           <div>
             <Button className="auth-submit" icon="send">

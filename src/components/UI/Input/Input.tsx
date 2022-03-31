@@ -1,11 +1,12 @@
 import classNames from 'classnames'
 import { ChangeEvent, FC, FocusEvent, InputHTMLAttributes, useState } from 'react'
 import { UID } from '../../../assets/scripts/helpers'
+import { ErrorMessages } from '../../../assets/scripts/validation'
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   hasError: boolean
-  errorMessage?: string
+  errorMessage?: string | null
   onCustomChange?: (e: ChangeEvent<HTMLInputElement>) => void
   onCustomFocus?: (e: FocusEvent<HTMLInputElement>) => void
   onCustomBlur?: (e: FocusEvent<HTMLInputElement>) => void
@@ -17,7 +18,7 @@ const Input: FC<IInput> = props => {
     children,
     label,
     hasError,
-    errorMessage = 'Поле обязательно',
+    errorMessage = ErrorMessages.EMPTY,
     onCustomChange,
     onCustomFocus,
     onCustomBlur,
@@ -57,7 +58,11 @@ const Input: FC<IInput> = props => {
       <label htmlFor={uid} className={classNames({ active: !!value || hasFocus })}>
         {label}
       </label>
-      {hasError ? <small className="helper-text invalid">{errorMessage}</small> : ''}
+      {hasError && errorMessage ? (
+        <small className="helper-text invalid">{errorMessage}</small>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
