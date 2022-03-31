@@ -1,13 +1,14 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
-import thunk from 'redux-thunk'
+import thunk, { ThunkMiddleware } from 'redux-thunk'
 import { asideReducer } from './reducers/aside'
+import { authReducer } from './reducers/auth'
 
 const rootReducer = combineReducers({
-  // appReducer,
   asideReducer,
+  authReducer,
 })
 
-export const store = createStore(rootReducer, applyMiddleware(thunk))
+export const store = createStore(rootReducer, applyMiddleware(thunk as ThunkMiddleware))
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

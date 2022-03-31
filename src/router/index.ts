@@ -17,6 +17,7 @@ export enum RouteNames {
   CATEGORIES = '/categories',
   PLANNING = '/planning',
   PROFILE = '/profile',
+  EVENT = '/event',
 }
 
 export const publicRoutes: IRoute[] = [
@@ -34,6 +35,13 @@ export const publicRoutes: IRoute[] = [
   },
 ]
 
-// export const privateRoutes: IRoute[] = [
-//   {path: RouteNames.EVENT, exact: true, component: Event}
-// ]
+export const privateRoutes: IRoute[] = [
+  {
+    path: RouteNames.HOME,
+    Component: Home,
+  },
+  // {
+  //   path: RouteNames.EVENT,
+  //   Component: Event,
+  // },
+]

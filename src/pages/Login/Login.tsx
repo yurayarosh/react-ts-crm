@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
+import { useAppDispatch } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
-
+import { setAuth } from '../../store/actions'
 
 const Login: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
   const [emailError, setEmailError] = useState<IInputError>({ error: true })
   const [passwordError, setPasswordError] = useState<IInputError>({ error: true })
+
+  const dispatch = useAppDispatch()
 
   const onSubmit = (e: FormEvent) => {
     setFormTouched(true)
@@ -19,7 +22,7 @@ const Login: FC = () => {
     e.preventDefault()
 
     if (isValid) {
-      console.log('success')
+      dispatch(setAuth(true))
     }
   }
 

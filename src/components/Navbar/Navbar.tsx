@@ -1,6 +1,7 @@
 import M from 'materialize-css'
-import { createRef, FC, useEffect } from 'react'
+import { createRef, FC, MouseEvent, useEffect } from 'react'
 import { useAppDispatch } from '../../hooks/store'
+import { setAuth } from '../../store/actions'
 import { TOGGLE_ASIDE } from '../../store/actions/types'
 import Clock from '../Clock/Clock'
 
@@ -20,6 +21,12 @@ const Navbar: FC = () => {
       if (dropdown?.destroy) dropdown.destroy()
     }
   })
+
+  const logout = (e: MouseEvent) => {
+    e.preventDefault()
+
+    dispatch(setAuth(false))
+  }
 
   return (
     <nav className="navbar orange lighten-1">
@@ -56,7 +63,7 @@ const Navbar: FC = () => {
               <li className="divider" tabIndex={-1} />
               <li>
                 {/* @click.prevent="logout" */}
-                <a href="#" className="black-text">
+                <a href="#" className="black-text" onClick={logout}>
                   <i className="material-icons">assignment_return</i>Выйти
                 </a>
               </li>

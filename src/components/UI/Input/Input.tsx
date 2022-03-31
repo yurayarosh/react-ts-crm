@@ -47,7 +47,7 @@ const Input: FC<IInput> = props => {
   return (
     <div className="input-field">
       <input
-        className={classNames('validate', className)}
+        className={classNames('validate', className, { invalid: hasError })}
         id={uid}
         value={value}
         onChange={onChange}

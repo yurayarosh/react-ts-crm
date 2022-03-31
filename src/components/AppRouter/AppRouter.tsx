@@ -1,28 +1,18 @@
-// import { Switch, Route, Redirect } from 'react-router-dom'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { publicRoutes, RouteNames } from '../../router'
-// import { useTypedSelector } from '../hooks/useTypedSelector'
+import { privateRoutes, publicRoutes, RouteNames } from '../../router'
+import { useAppSelector } from '../../hooks/store'
 
 const AppRouter = () => {
-  // const { isAuth } = useTypedSelector(state => state.auth)
+  const isAuth = useAppSelector(({ authReducer }) => authReducer.isAuth)
 
-  // return isAuth ? (
-  //   <Switch>
-  //     {privateRoutes.map(route => (
-  //       <Route path={route.path} exact={route.exact} component={route.component} key={route.path} />
-  //     ))}
-  //     <Redirect to={RouteNames.EVENT} />
-  //   </Switch>
-  // ) : (
-  //   <Switch>
-  //     {publicRoutes.map(route => (
-  //       <Route path={route.path} exact={route.exact} component={route.component} key={route.path} />
-  //     ))}
-  //     <Redirect to={RouteNames.LOGIN} />
-  //   </Switch>
-  // )
-
-  return (
+  return isAuth ? (
+    <Routes>
+      {privateRoutes.map(({ path, Component }) => (
+        <Route path={path} element={<Component />} key={path} />
+      ))}
+      <Route path="*" element={<Navigate to={RouteNames.HOME} />} />
+    </Routes>
+  ) : (
     <Routes>
       {publicRoutes.map(({ path, Component }) => (
         <Route path={path} element={<Component />} key={path} />
