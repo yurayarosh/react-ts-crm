@@ -1,21 +1,8 @@
-import { TOGGLE_ASIDE } from '../actions/types'
-
-interface AsideAction {
-  type: string
-  payload?: object
-}
-
-interface IAsideState {
-  isOpen: Boolean
-}
-
-// const initialState:IAsideState = {
-//   isOpen: true,
-// }
+import { AsideAction, IAsideState, ActionTypes } from '../actions/types'
 
 export const asideReducer = (state: IAsideState = { isOpen: true }, action: AsideAction) => {
   switch (action.type) {
-    case TOGGLE_ASIDE:
+    case ActionTypes.TOGGLE_ASIDE:
       return {
         ...state,
         isOpen: !state.isOpen,

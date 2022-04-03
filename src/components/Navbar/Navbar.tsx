@@ -2,14 +2,14 @@ import M from 'materialize-css'
 import { createRef, FC, MouseEvent, useEffect } from 'react'
 import { useAppDispatch } from '../../hooks/store'
 import { setAuth } from '../../store/actions'
-import { TOGGLE_ASIDE } from '../../store/actions/types'
+import { ActionTypes } from '../../store/actions/types'
 import Clock from '../Clock/Clock'
 
 const Navbar: FC = () => {
   const dispatch = useAppDispatch()
 
   const toggleAside = () => {
-    dispatch({ type: TOGGLE_ASIDE })
+    dispatch({ type: ActionTypes.TOGGLE_ASIDE })
   }
 
   const dropdownTrigger = createRef<HTMLAnchorElement>()

@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import './App.css'
 import AppRouter from './components/AppRouter/AppRouter'
 import { useAppDispatch } from './hooks/store'
