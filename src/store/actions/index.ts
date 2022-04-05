@@ -16,15 +16,21 @@ export const fetchCurrency = () => async (dispatch: Dispatch<CurrencyAction>) =>
     dispatch({ type: ActionTypes.FETCH_CURRENCY_START })
 
     const res = await fetch('https://api.exchangerate-api.com/v4/latest/UAH')
-    const data: ICurrencyData = await res.json()
 
-    console.log({ data })
+    if (res.ok) {
+      const data: ICurrencyData = await res.json()
 
-    dispatch({
-      type: ActionTypes.FETCH_CURRENCY_SUCCESS,
-      data,
-    })
-  } catch (error: any) {
+      dispatch({
+        type: ActionTypes.FETCH_CURRENCY_SUCCESS,
+        data,
+      })
+    } else {
+      dispatch({
+        type: ActionTypes.FETCH_CURRENCY_ERROR,
+        error: 'Response error',
+      })
+    }
+  } catch (error) {
     dispatch({
       type: ActionTypes.FETCH_CURRENCY_ERROR,
       error,

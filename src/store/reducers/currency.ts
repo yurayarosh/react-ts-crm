@@ -3,7 +3,7 @@ import { ActionTypes, CurrencyAction, ICurrencyState } from '../actions/types'
 export const currencyReducer = (
   state: ICurrencyState = { isLoading: false, data: null },
   action: CurrencyAction
-) => {
+): ICurrencyState => {
   switch (action.type) {
     case ActionTypes.FETCH_CURRENCY_START:
       return {
@@ -15,14 +15,14 @@ export const currencyReducer = (
       return {
         ...state,
         isLoading: false,
-        data: state.data,
+        data: action.data,
       }
 
     case ActionTypes.FETCH_CURRENCY_ERROR:
       return {
         ...state,
         isLoading: false,
-        error: state.error,
+        error: action.error,
       }
 
     default:

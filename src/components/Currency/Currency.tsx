@@ -4,32 +4,21 @@ import { useActions } from '../../hooks/useActions'
 // import { fetchCurrency } from '../../store/actions'
 // import { ICurrencyData } from '../../store/actions/types'
 
-
-
 const Currency: FC = () => {
   const [date, setDate] = useState<string>('')
   // const [curr, setCurrency] = useState<ICurrencyData | null>(null)
 
   // const dispatch = useAppDispatch()
 
-  const { fetchCurrency } = useActions()
-
   const { data: currency, isLoading } = useAppSelector(state => state.currencyReducer)
 
+  const { fetchCurrency } = useActions()
+
   useEffect(() => {
-    // dispatch(fetchCurrency())
-
     fetchCurrency()
+  }, [])
 
-    const rates = currency?.date
-    
-
-    console.log({ rates })
-  }, [currency])
-
-  if (isLoading) return (
-    <h1>IS LOADING</h1>
-  )
+  if (isLoading) return <h1>IS LOADING</h1>
 
   return (
     <div className="col s12 m6 l8">
@@ -50,20 +39,20 @@ const Currency: FC = () => {
             <tbody>
               <tr>
                 <td>UAH</td>
-                <td>1.0000</td>
-                <td>{date}</td>
+                <td>{currency ?  (1 / +currency.rates.UAH).toFixed(4) : ''}</td>
+                <td>{currency?.date}</td>
               </tr>
 
               <tr>
                 <td>EUR</td>
-                <td>32.2581</td>
-                <td>{date}</td>
+                <td>{currency ?  (1 / +currency.rates.EUR).toFixed(4) : ''}</td>
+                <td>{currency?.date}</td>
               </tr>
 
               <tr>
                 <td>USD</td>
-                <td>29.1545</td>
-                <td>{date}</td>
+                <td>{currency ?  (1 / +currency.rates.USD).toFixed(4) : ''}</td>
+                <td>{currency?.date}</td>
               </tr>
             </tbody>
           </table>

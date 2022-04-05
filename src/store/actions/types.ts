@@ -40,12 +40,12 @@ export interface ICurrencyData {
 export interface CurrencyAction {
   type: string
   isLoading?: boolean
-  data?: ICurrencyData | null
+  data?: ICurrencyData | null | undefined
   error?: any
 }
 
 export interface ICurrencyState {
   isLoading: boolean
-  data: ICurrencyData | null
+  data: ICurrencyData | null | undefined
   error?: any
 }
