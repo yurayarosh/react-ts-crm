@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux'
+import { setTimeout } from 'timers/promises'
 import { ActionTypes, AuthAction, CurrencyAction, ICurrencyData } from './types'
 
 export const setAuth = (isAuth: boolean) => (dispatch: Dispatch<AuthAction>) => {

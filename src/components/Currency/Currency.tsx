@@ -1,24 +1,15 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { useActions } from '../../hooks/useActions'
-// import { fetchCurrency } from '../../store/actions'
-// import { ICurrencyData } from '../../store/actions/types'
+import { fetchCurrency } from '../../store/actions'
 
 const Currency: FC = () => {
-  const [date, setDate] = useState<string>('')
-  // const [curr, setCurrency] = useState<ICurrencyData | null>(null)
-
-  // const dispatch = useAppDispatch()
-
-  const { data: currency, isLoading } = useAppSelector(state => state.currencyReducer)
-
-  const { fetchCurrency } = useActions()
+  const currencies = ['UAH', 'EUR', 'USD']
+  const dispatch = useAppDispatch()
+  const { data: currency } = useAppSelector(state => state.currencyReducer)
 
   useEffect(() => {
-    fetchCurrency()
+    dispatch(fetchCurrency())
   }, [])
-
-  if (isLoading) return <h1>IS LOADING</h1>
 
   return (
     <div className="col s12 m6 l8">
@@ -37,23 +28,13 @@ const Currency: FC = () => {
             </thead>
 
             <tbody>
-              <tr>
-                <td>UAH</td>
-                <td>{currency ?  (1 / +currency.rates.UAH).toFixed(4) : ''}</td>
-                <td>{currency?.date}</td>
-              </tr>
-
-              <tr>
-                <td>EUR</td>
-                <td>{currency ?  (1 / +currency.rates.EUR).toFixed(4) : ''}</td>
-                <td>{currency?.date}</td>
-              </tr>
-
-              <tr>
-                <td>USD</td>
-                <td>{currency ?  (1 / +currency.rates.USD).toFixed(4) : ''}</td>
-                <td>{currency?.date}</td>
-              </tr>
+              {currencies.map(curr => (
+                <tr key={curr}>
+                  <td>{curr}</td>
+                  <td>{currency ? (1 / +currency.rates[curr]).toFixed(4) : ''}</td>
+                  <td>{currency?.date}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

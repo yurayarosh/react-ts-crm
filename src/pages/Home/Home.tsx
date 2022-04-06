@@ -1,10 +1,16 @@
 import { FC } from 'react'
 import Bill from '../../components/Bill/Bill'
 import Currency from '../../components/Currency/Currency'
+import { useAppDispatch } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
+import { fetchCurrency } from '../../store/actions'
 
 const Home: FC = () => {
-  const refreshData = () => {}
+  const dispatch = useAppDispatch()
+
+  const refreshData = () => {
+    dispatch(fetchCurrency())
+  }
 
   return (
     <LayoutDafault>

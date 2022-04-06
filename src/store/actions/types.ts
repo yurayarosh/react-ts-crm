@@ -29,6 +29,7 @@ export interface IRates {
   UAH: number
   EUR: number
   USD: number
+  [key: string]: number
 }
 
 export interface ICurrencyData {
