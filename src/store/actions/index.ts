@@ -1,5 +1,13 @@
 import { Dispatch } from 'redux'
-import { ActionTypes, AuthAction, CurrencyAction, ICurrencyData } from './types'
+import {
+  ActionRegister,
+  ActionTypes,
+  AuthAction,
+  CurrencyAction,
+  ICurrencyData,
+  IRegisterFormData,
+  IRegisterResponseData,
+} from './types'
 
 export const setAuth = (isAuth: boolean) => (dispatch: Dispatch<AuthAction>) => {
   // if (isAuth) {
@@ -11,6 +19,32 @@ export const setAuth = (isAuth: boolean) => (dispatch: Dispatch<AuthAction>) => 
   // }
   // console.log('auth', process.env.REACT_APP_FIREBASE_API_KEY)
 }
+
+export const register =
+  (formData: IRegisterFormData) => async (dispatch: Dispatch<ActionRegister>) => {
+    try {
+      const res = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
+        {
+          method: 'post',
+          body: JSON.stringify(formData),
+        }
+      )
+
+      if (res.ok) {
+        const data: IRegisterResponseData = await res.json()
+
+        dispatch({ type: ActionTypes.REGISTER_SUCCESS, data })
+      } else {
+        dispatch({
+          type: ActionTypes.REGISTER_ERROR,
+          error: `Registration error ${res.statusText}`,
+        })
+      }
+    } catch (error: any) {
+      dispatch({ type: ActionTypes.REGISTER_ERROR, error: `register server error: ${error}` })
+    }
+  }
 
 export const fetchCurrency = () => async (dispatch: Dispatch<CurrencyAction>) => {
   try {
