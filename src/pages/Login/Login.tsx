@@ -32,7 +32,7 @@ const Login: FC = () => {
       }
 
       const res = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDIHsl4aa3AUa8QgW7CG78Y9tIhkCvCoso',
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
         {
           method: 'post',
           body: JSON.stringify(formData),
