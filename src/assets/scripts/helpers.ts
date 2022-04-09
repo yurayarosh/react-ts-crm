@@ -1,3 +1,5 @@
+import M from 'materialize-css'
+
 export const filterDate = (value: Date, format: String = '') => {
   const options =
     format === 'date-time'
@@ -21,3 +23,6 @@ export const filterDate = (value: Date, format: String = '') => {
 }
 
 export const UID = () => `uid-${Math.random().toString(36).slice(2, 9)}`
+
+export const showToast = (html: string) => M.toast({ html })
+export const showToastError = (html: string) => M.toast({ html: `[ERROR]: ${html}` })

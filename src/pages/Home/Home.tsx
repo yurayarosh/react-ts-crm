@@ -14,7 +14,6 @@ const Home: FC = () => {
 
   return (
     <LayoutDafault>
-      {/* <div> */}
       <div className="page-title">
         <h3>Счет</h3>
 
@@ -38,7 +37,6 @@ const Home: FC = () => {
 
         <Currency />
       </div>
-      {/* </div> */}
     </LayoutDafault>
   )
 }

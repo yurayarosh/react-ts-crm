@@ -12,17 +12,36 @@ const Login: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
   const [emailError, setEmailError] = useState<IInputError>({ error: true })
   const [passwordError, setPasswordError] = useState<IInputError>({ error: true })
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     setFormTouched(true)
 
     const isValid = !emailError.error && !passwordError.error
     e.preventDefault()
 
     if (isValid) {
-      dispatch(setAuth(true))
+      // dispatch(setAuth(true))
+
+      const formData = {
+        email,
+        password,
+      }
+
+      const res = await fetch(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDIHsl4aa3AUa8QgW7CG78Y9tIhkCvCoso',
+        {
+          method: 'post',
+          body: JSON.stringify(formData),
+        }
+      )
+
+      const data = await res.json()
+
+      console.log({ res, data })
     }
   }
 
@@ -37,12 +56,15 @@ const Login: FC = () => {
 
     switch (name) {
       case 'email':
+        setEmail(e.target.value)
         setEmailError({
           error: validation.error,
           text: validation.text,
         })
+
         break
       case 'password':
+        setPassword(e.target.value)
         setPasswordError({
           error: validation.error,
         })

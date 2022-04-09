@@ -1,15 +1,15 @@
 import { Dispatch } from 'redux'
-import { setTimeout } from 'timers/promises'
 import { ActionTypes, AuthAction, CurrencyAction, ICurrencyData } from './types'
 
 export const setAuth = (isAuth: boolean) => (dispatch: Dispatch<AuthAction>) => {
-  if (isAuth) {
-    localStorage.setItem('isAuth', 'true')
-    dispatch({ type: ActionTypes.SET_AUTH_TRUE })
-  } else {
-    localStorage.removeItem('isAuth')
-    dispatch({ type: ActionTypes.SET_AUTH_FALSE })
-  }
+  // if (isAuth) {
+  //   // localStorage.setItem('isAuth', 'true')
+  //   dispatch({ type: ActionTypes.SET_AUTH_TRUE })
+  // } else {
+  //   // localStorage.removeItem('isAuth')
+  //   dispatch({ type: ActionTypes.SET_AUTH_FALSE })
+  // }
+  // console.log('auth', process.env.REACT_APP_FIREBASE_API_KEY)
 }
 
 export const fetchCurrency = () => async (dispatch: Dispatch<CurrencyAction>) => {

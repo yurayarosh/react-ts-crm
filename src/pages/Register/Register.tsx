@@ -1,10 +1,21 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { showToast, showToastError } from '../../assets/scripts/helpers'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
+
+export interface IRegisterResponseData {
+  email: string
+  expiresIn: string
+  idToken: string
+  kind: string
+  localId: string
+  refreshToken: string
+}
 
 const Login: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
@@ -12,15 +23,45 @@ const Login: FC = () => {
   const [nameError, setNameError] = useState<IInputError>({ error: true })
   const [passwordError, setPasswordError] = useState<IInputError>({ error: true })
   const [hasTermsError, setTermsError] = useState(true)
+  const [email, setEmail] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     setFormTouched(true)
 
     const isValid = !emailError.error && !nameError.error && !passwordError.error && !hasTermsError
     e.preventDefault()
 
+    const formData = {
+      email,
+      name,
+      password,
+    }
+
     if (isValid) {
-      console.log('success')
+      try {
+        const res = await fetch(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
+          {
+            method: 'post',
+            body: JSON.stringify(formData),
+          }
+        )
+
+        if (res.ok) {
+          const data: IRegisterResponseData = await res.json()
+
+          console.log({ data })
+          
+
+          showToast(`User ${data.email} succesfully sign up!`)
+        } else {
+          showToastError(`Registration error ${res.statusText}`)
+        }
+      } catch (error: any) {
+        throw new Error('register server error', error)
+      }
     }
   }
 
@@ -35,18 +76,21 @@ const Login: FC = () => {
 
     switch (name) {
       case 'email':
+        setEmail(e.target.value)
         setEmailError({
           error: validation.error,
           text: validation.text,
         })
         break
       case 'username':
+        setName(e.target.value)
         setNameError({
           error: validation.error,
           text: validation.text,
         })
         break
       case 'password':
+        setPassword(e.target.value)
         setPasswordError({
           error: validation.error,
           text: validation.text,

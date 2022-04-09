@@ -1,4 +1,8 @@
-import { ActionTypes, AuthAction, IAuthState } from '../actions/types'
+import {
+  ActionTypes,
+  AuthAction,
+  IAuthState,
+} from '../actions/types'
 
 export const authReducer = (state: IAuthState = { isAuth: false }, action: AuthAction) => {
   switch (action.type) {
