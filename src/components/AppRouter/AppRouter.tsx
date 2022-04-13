@@ -3,9 +3,9 @@ import { privateRoutes, publicRoutes, RouteNames } from '../../router'
 import { useAppSelector } from '../../hooks/store'
 
 const AppRouter = () => {
-  const isAuth = useAppSelector(({ authReducer }) => authReducer.isAuth)
+  const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
 
-  return isAuth ? (
+  return user?.localId ? (
     <Routes>
       {privateRoutes.map(({ path, Component }) => (
         <Route path={path} element={<Component />} key={path} />

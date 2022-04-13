@@ -7,9 +7,9 @@ import Input from '../../components/UI/Input/Input'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
-import { register } from '../../store/actions'
+import { register, setUser } from '../../store/actions'
 
-const Login: FC = () => {
+const Register: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
   const [emailError, setEmailError] = useState<IInputError>({ error: true })
   const [nameError, setNameError] = useState<IInputError>({ error: true })
@@ -20,12 +20,22 @@ const Login: FC = () => {
   const [password, setPassword] = useState<string>('')
 
   const dispatch = useAppDispatch()
-  const { data, error } = useAppSelector(({ registerReducer }) => registerReducer)
+  const { data, error, isLoading } = useAppSelector(({ registerReducer }) => registerReducer)
+  // const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
 
   useEffect(() => {
     if (error) showToastError(error)
-    if (data?.email) {
+    if (data?.localId) {
       // TODO: Add login logic
+      // console.log({ data })
+
+      dispatch(
+        setUser({
+          name,
+          email,
+          localId: data.localId,
+        })
+      )
     }
   }, [data, error])
 
@@ -130,7 +140,7 @@ const Login: FC = () => {
 
         <div className="card-action">
           <div>
-            <Button className="auth-submit" icon="send">
+            <Button className="auth-submit" icon="send" disabled={isLoading}>
               Зарегистрироваться
             </Button>
           </div>
@@ -145,4 +155,4 @@ const Login: FC = () => {
   )
 }
 
-export default Login
+export default Register

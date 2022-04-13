@@ -7,8 +7,15 @@ export enum ActionTypes {
   FETCH_CURRENCY_SUCCESS = 'FETCH_CURRENCY_SUCCESS',
   FETCH_CURRENCY_ERROR = 'FETCH_CURRENCY_ERROR',
 
+  REGISTER_START = 'REGISTER_START',
   REGISTER_SUCCESS = 'REGISTER_SUCCESS',
   REGISTER_ERROR = 'REGISTER_ERROR',
+
+  LOGIN_START = 'LOGIN_START',
+  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+  LOGIN_ERROR = 'LOGIN_ERROR',
+
+  SET_USER = 'SET_USER',
 }
 
 export interface AsideAction {
@@ -72,6 +79,7 @@ export interface IRegisterFormData {
 }
 
 export interface IRegisterState {
+  isLoading: boolean
   data?: IRegisterResponseData | undefined
   error?: string
 }
@@ -80,4 +88,33 @@ export interface ActionRegister {
   type: string
   data?: IRegisterResponseData | undefined
   error?: any
+}
+
+//LOGIN
+export interface IUser {
+  email: string | null
+  name: string | null
+  localId: string | null
+}
+
+export interface ActionUser {
+  type: string
+  user: IUser | null
+}
+
+export interface ActionLogin {
+  type: string
+  isLoading: boolean
+  user?: IUser
+  error?: string
+}
+
+export interface ISetUserState {
+  user: IUser | null
+}
+
+export interface ILoginState {
+  isLoading: boolean
+  user?: IUser
+  error?: string
 }

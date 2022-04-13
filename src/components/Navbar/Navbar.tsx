@@ -1,7 +1,7 @@
 import M from 'materialize-css'
 import { createRef, FC, MouseEvent, useEffect } from 'react'
 import { useAppDispatch } from '../../hooks/store'
-import { setAuth } from '../../store/actions'
+import { setUser } from '../../store/actions'
 import { ActionTypes } from '../../store/actions/types'
 import Clock from '../Clock/Clock'
 
@@ -25,7 +25,7 @@ const Navbar: FC = () => {
   const logout = (e: MouseEvent) => {
     e.preventDefault()
 
-    dispatch(setAuth(false))
+    dispatch(setUser(null))
   }
 
   return (

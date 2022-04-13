@@ -2,27 +2,34 @@ import { Dispatch } from 'redux'
 import {
   ActionRegister,
   ActionTypes,
-  AuthAction,
+  ActionLogin,
+  ActionUser,
   CurrencyAction,
   ICurrencyData,
   IRegisterFormData,
   IRegisterResponseData,
+  IUser,
 } from './types'
 
-export const setAuth = (isAuth: boolean) => (dispatch: Dispatch<AuthAction>) => {
-  // if (isAuth) {
-  //   // localStorage.setItem('isAuth', 'true')
-  //   dispatch({ type: ActionTypes.SET_AUTH_TRUE })
-  // } else {
-  //   // localStorage.removeItem('isAuth')
-  //   dispatch({ type: ActionTypes.SET_AUTH_FALSE })
-  // }
-  // console.log('auth', process.env.REACT_APP_FIREBASE_API_KEY)
+export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionUser>) => {
+  if (user?.localId && user.name && user.email) {
+    localStorage.setItem('userId', user.localId)
+    localStorage.setItem('userName', user.name)
+    localStorage.setItem('userEmail', user.email)
+  } else {
+    localStorage.removeItem('userId')
+    localStorage.removeItem('userName')
+    localStorage.removeItem('userEmail')
+  }
+
+  dispatch({ type: ActionTypes.SET_USER, user })
 }
 
 export const register =
   (formData: IRegisterFormData) => async (dispatch: Dispatch<ActionRegister>) => {
     try {
+      dispatch({ type: ActionTypes.REGISTER_START })
+
       const res = await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
         {
@@ -42,7 +49,10 @@ export const register =
         })
       }
     } catch (error: any) {
-      dispatch({ type: ActionTypes.REGISTER_ERROR, error: `register server error: ${error}` })
+      dispatch({
+        type: ActionTypes.REGISTER_ERROR,
+        error: `register server error: ${error}`,
+      })
     }
   }
 

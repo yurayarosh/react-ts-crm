@@ -6,7 +6,6 @@ import Input from '../../components/UI/Input/Input'
 import { useAppDispatch } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
-import { setAuth } from '../../store/actions'
 
 const Login: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)

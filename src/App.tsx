@@ -2,15 +2,19 @@ import { useEffect } from 'react'
 import './App.css'
 import AppRouter from './components/AppRouter/AppRouter'
 import { useAppDispatch } from './hooks/store'
-import { setAuth } from './store/actions'
+import { setUser } from './store/actions'
 
 function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const isAuth = !!localStorage.getItem('isAuth')
+    const user = {
+      name: localStorage.getItem('userName'),
+      email: localStorage.getItem('userEmail'),
+      localId: localStorage.getItem('userId'),
+    }
 
-    dispatch(setAuth(isAuth))
+    dispatch(setUser(user))
   })
 
   return <AppRouter />
