@@ -8,11 +8,13 @@ function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const user = {
-      name: localStorage.getItem('userName'),
-      email: localStorage.getItem('userEmail'),
-      localId: localStorage.getItem('userId'),
-    }
+    const user = localStorage.getItem('userId')
+      ? {
+          name: localStorage.getItem('userName'),
+          email: localStorage.getItem('userEmail'),
+          localId: localStorage.getItem('userId'),
+        }
+      : null
 
     dispatch(setUser(user))
   })
