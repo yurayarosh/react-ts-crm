@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
-import { useAppDispatch } from '../../hooks/store'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
+import { login } from '../../store/actions'
 
 const Login: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
@@ -14,33 +15,22 @@ const Login: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
-  // const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
+  const { isLoading } = useAppSelector(({ loginReducer }) => loginReducer)
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     setFormTouched(true)
 
     const isValid = !emailError.error && !passwordError.error
     e.preventDefault()
 
     if (isValid) {
-      // dispatch(setAuth(true))
-
       const formData = {
         email,
         password,
       }
 
-      const res = await fetch(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
-        {
-          method: 'post',
-          body: JSON.stringify(formData),
-        }
-      )
-
-      const data = await res.json()
-
-      console.log({ res, data })
+      dispatch(login(formData))
     }
   }
 
@@ -96,7 +86,7 @@ const Login: FC = () => {
 
         <div className="card-action">
           <div>
-            <Button className="auth-submit" icon="send">
+            <Button className="auth-submit" icon="send" disabled={isLoading}>
               Войти
             </Button>
           </div>

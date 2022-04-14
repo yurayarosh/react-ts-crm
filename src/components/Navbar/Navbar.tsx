@@ -1,12 +1,13 @@
 import M from 'materialize-css'
 import { createRef, FC, MouseEvent, useEffect } from 'react'
-import { useAppDispatch } from '../../hooks/store'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { setUser } from '../../store/actions'
 import { ActionTypes } from '../../store/actions/types'
 import Clock from '../Clock/Clock'
 
 const Navbar: FC = () => {
   const dispatch = useAppDispatch()
+  const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
 
   const toggleAside = () => {
     dispatch({ type: ActionTypes.TOGGLE_ASIDE })
@@ -48,8 +49,7 @@ const Navbar: FC = () => {
               data-target="dropdown"
               ref={dropdownTrigger}
             >
-              {/* {/* {{ $store.state.auth.userName || 'user name ' }} */}
-              name
+              {user?.name}
               <i className="material-icons right">arrow_drop_down</i>
             </a>
 
@@ -62,7 +62,6 @@ const Navbar: FC = () => {
               </li>
               <li className="divider" tabIndex={-1} />
               <li>
-                {/* @click.prevent="logout" */}
                 <a href="#" className="black-text" onClick={logout}>
                   <i className="material-icons">assignment_return</i>Выйти
                 </a>

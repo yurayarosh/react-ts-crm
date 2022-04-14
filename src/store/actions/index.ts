@@ -9,6 +9,9 @@ import {
   IRegisterFormData,
   IRegisterResponseData,
   IUser,
+  ILoginState,
+  ILoginData,
+  // ActionLogout,
 } from './types'
 
 export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionUser>) => {
@@ -23,6 +26,32 @@ export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionUser>) 
   }
 
   dispatch({ type: ActionTypes.SET_USER, user })
+}
+
+export const postUser = (user: IUser) => async (dispatch: Dispatch) => {
+  try {
+    const response = await fetch(
+      // `https://${process.env.REACT_APP_FIREBASE_PROJECT_ID}.firebaseio.com/users/${id}/info.json`,
+      `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${user.localId}/info.json`,
+      {
+        method: 'post',
+        body: JSON.stringify(user),
+      }
+    )
+
+    // const data = await response.json()
+
+    if (response.ok) {
+      dispatch({ type: ActionTypes.POST_USER_SUCCESS, user })
+    } else {
+      dispatch({
+        type: ActionTypes.POST_USER_ERROR,
+        error: `Post user error ${response.statusText}`,
+      })
+    }
+  } catch (error) {
+    dispatch({ type: ActionTypes.POST_USER_ERROR, error: `Post user server errror: ${error}` })
+  }
 }
 
 export const register =
@@ -55,6 +84,34 @@ export const register =
       })
     }
   }
+
+export const login = (loginData: ILoginData) => async (dispatch: Dispatch<ActionLogin>) => {
+  try {
+    // const response = await fetch(
+    //   `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
+    // )
+    // const data = await response.json()
+
+    // console.log({ data })
+
+    const response = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
+      {
+        method: 'post',
+        body: JSON.stringify(loginData),
+      }
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+
+      console.log({ data })
+      
+    }
+  } catch (error) {
+    dispatch({ type: ActionTypes.LOGIN_ERROR, error: `Login server error ${error}` })
+  }
+}
 
 export const fetchCurrency = () => async (dispatch: Dispatch<CurrencyAction>) => {
   try {

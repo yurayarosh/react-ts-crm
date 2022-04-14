@@ -1,11 +1,13 @@
 import {
   ActionLogin,
+  // ActionLogout,
   ActionRegister,
   ActionTypes,
   ActionUser,
   AuthAction,
   IAuthState,
   ILoginState,
+  // ILogoutState,
   IRegisterState,
   ISetUserState,
 } from '../actions/types'
@@ -66,13 +68,30 @@ export const setUserReducer = (
         ...state,
         user: action.user,
       }
+    // case ActionTypes.POST_USER_START:
+    //   return {
+    //     ...state,
+    //   }
+    case ActionTypes.POST_USER_SUCCESS:
+      return {
+        ...state,
+        user: action.user,
+      }
+    case ActionTypes.POST_USER_ERROR:
+      return {
+        ...state,
+        error: action.error,
+      }
 
     default:
       return state
   }
 }
 
-export const loginReducer = (state: ILoginState = { isLoading: false }, action: ActionLogin) => {
+export const loginReducer = (
+  state: ILoginState = { isLoading: false },
+  action: ActionLogin
+): ILoginState => {
   switch (action.type) {
     case ActionTypes.LOGIN_START:
       return {
@@ -83,7 +102,7 @@ export const loginReducer = (state: ILoginState = { isLoading: false }, action: 
       return {
         ...state,
         user: action.user,
-        isLoading: true,
+        isLoading: false,
       }
     case ActionTypes.LOGIN_ERROR:
       return {
@@ -96,3 +115,30 @@ export const loginReducer = (state: ILoginState = { isLoading: false }, action: 
       return state
   }
 }
+
+// export const logoutReducer = (
+//   state: ILogoutState = { isLoading: false },
+//   action: ActionLogout
+// ): ILogoutState => {
+//   switch (action.type) {
+//     case ActionTypes.LOGOUT_START:
+//       return {
+//         ...state,
+//         isLoading: true,
+//       }
+//     case ActionTypes.LOGOUT_SUCCESS:
+//       return {
+//         ...state,
+//         isLoading: false,
+//       }
+//     case ActionTypes.LOGOUT_ERROR:
+//       return {
+//         ...state,
+//         error: action.error,
+//         isLoading: false,
+//       }
+
+//     default:
+//       return state
+//   }
+// }

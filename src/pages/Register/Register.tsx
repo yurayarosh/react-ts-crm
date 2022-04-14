@@ -7,7 +7,7 @@ import Input from '../../components/UI/Input/Input'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
-import { register, setUser } from '../../store/actions'
+import { postUser, register, setUser } from '../../store/actions'
 
 const Register: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
@@ -26,16 +26,14 @@ const Register: FC = () => {
   useEffect(() => {
     if (error) showToastError(error)
     if (data?.localId) {
-      // TODO: Add login logic
-      // console.log({ data })
+      const user = {
+        name,
+        email,
+        localId: data.localId,
+      }
 
-      dispatch(
-        setUser({
-          name,
-          email,
-          localId: data.localId,
-        })
-      )
+      dispatch(setUser(user))
+      dispatch(postUser(user))
     }
   }, [data, error])
 
