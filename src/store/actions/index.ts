@@ -3,7 +3,6 @@ import {
   ActionRegister,
   ActionTypes,
   ActionLogin,
-  ActionUser,
   CurrencyAction,
   ICurrencyData,
   IRegisterFormData,
@@ -11,10 +10,14 @@ import {
   IUser,
   ILoginState,
   ILoginData,
+  ILoginResponse,
+  ActionPostUser,
+  ActionFetchUser,
+  ActionSetUser,
   // ActionLogout,
 } from './types'
 
-export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionUser>) => {
+export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionSetUser>) => {
   if (user?.localId && user.name && user.email) {
     localStorage.setItem('userId', user.localId)
     localStorage.setItem('userName', user.name)
@@ -28,7 +31,7 @@ export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionUser>) 
   dispatch({ type: ActionTypes.SET_USER, user })
 }
 
-export const postUser = (user: IUser) => async (dispatch: Dispatch) => {
+export const postUser = (user: IUser) => async (dispatch: Dispatch<ActionPostUser>) => {
   try {
     const response = await fetch(
       // `https://${process.env.REACT_APP_FIREBASE_PROJECT_ID}.firebaseio.com/users/${id}/info.json`,
@@ -51,6 +54,27 @@ export const postUser = (user: IUser) => async (dispatch: Dispatch) => {
     }
   } catch (error) {
     dispatch({ type: ActionTypes.POST_USER_ERROR, error: `Post user server errror: ${error}` })
+  }
+}
+
+export const fetchUser = (localId: string) => async (dispatch: Dispatch<ActionFetchUser>) => {
+  try {
+    dispatch({ type: ActionTypes.FETCH_USER_START })
+
+    const response = await fetch(
+      `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
+    )
+    const data = await response.json()
+
+    console.log({ data })
+
+    if (response.ok) {
+      dispatch({ type: ActionTypes.FETCH_CURRENCY_SUCCESS, user: {} })
+    } else {
+      dispatch({ type: ActionTypes.FETCH_USER_ERROR, error: '' })
+    }
+  } catch (error) {
+    dispatch({ type: ActionTypes.FETCH_USER_ERROR, error: `Fetch user server error ${error}` })
   }
 }
 
@@ -87,13 +111,6 @@ export const register =
 
 export const login = (loginData: ILoginData) => async (dispatch: Dispatch<ActionLogin>) => {
   try {
-    // const response = await fetch(
-    //   `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
-    // )
-    // const data = await response.json()
-
-    // console.log({ data })
-
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
       {
@@ -102,11 +119,17 @@ export const login = (loginData: ILoginData) => async (dispatch: Dispatch<Action
       }
     )
 
-    if (response.ok) {
-      const data = await response.json()
+    const data: ILoginResponse = await response.json()
 
+    if (response.ok) {
       console.log({ data })
-      
+
+      // dispatch(fetchUser(data.localId))
+    } else {
+      dispatch({
+        type: ActionTypes.LOGIN_ERROR,
+        error: data.error?.message,
+      })
     }
   } catch (error) {
     dispatch({ type: ActionTypes.LOGIN_ERROR, error: `Login server error ${error}` })

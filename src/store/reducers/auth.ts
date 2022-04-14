@@ -2,8 +2,8 @@ import {
   ActionLogin,
   // ActionLogout,
   ActionRegister,
+  ActionSetUser,
   ActionTypes,
-  ActionUser,
   AuthAction,
   IAuthState,
   ILoginState,
@@ -60,7 +60,7 @@ export const registerReducer = (
 
 export const setUserReducer = (
   state: ISetUserState = { user: null },
-  action: ActionUser
+  action: ActionSetUser
 ): ISetUserState => {
   switch (action.type) {
     case ActionTypes.SET_USER:

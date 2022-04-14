@@ -1,5 +1,6 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react'
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { showToastError } from '../../assets/scripts/helpers'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
@@ -16,7 +17,11 @@ const Login: FC = () => {
   const [password, setPassword] = useState<string>('')
 
   const dispatch = useAppDispatch()
-  const { isLoading } = useAppSelector(({ loginReducer }) => loginReducer)
+  const { isLoading, error } = useAppSelector(({ loginReducer }) => loginReducer)
+
+  useEffect(() => {
+    if (error) showToastError(error)
+  }, [error])
 
   const onSubmit = (e: FormEvent) => {
     setFormTouched(true)

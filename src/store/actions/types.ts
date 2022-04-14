@@ -24,6 +24,10 @@ export enum ActionTypes {
   POST_USER_START = 'POST_USER_START',
   POST_USER_SUCCESS = 'POST_USER_SUCCESS',
   POST_USER_ERROR = 'POST_USER_ERROR',
+
+  FETCH_USER_START = 'FETCH_USER_START',
+  FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS',
+  FETCH_USER_ERROR = 'FETCH_USER_ERROR',
 }
 
 export interface AsideAction {
@@ -110,9 +114,21 @@ export interface IUser {
   localId: string | null
 }
 
-export interface ActionUser {
+export interface ActionPostUser {
+  type: string
+  user?: IUser | null
+  error?: string
+}
+
+export interface ActionSetUser {
   type: string
   user: IUser | null
+  error?: string
+}
+
+export interface ActionFetchUser {
+  type: string
+  localId?: string
   error?: string
 }
 
@@ -131,6 +147,26 @@ export interface ILoginState {
   isLoading: boolean
   user?: IUser
   error?: string
+}
+
+export interface ILoginResponseError {
+  code: number
+  errors: Array<{
+    domain: string
+    message: string
+    reason: string
+  }>
+  message: string
+}
+
+export interface ILoginResponse {
+  displayName: string
+  email: string
+  idToken: string
+  kind: string
+  localId: string
+  registered: boolean
+  error?: ILoginResponseError
 }
 
 // //LOGOUT
