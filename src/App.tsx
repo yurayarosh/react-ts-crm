@@ -1,11 +1,31 @@
 import { useEffect } from 'react'
 import './App.css'
 import AppRouter from './components/AppRouter/AppRouter'
-import { useAppDispatch } from './hooks/store'
-import { setUser } from './store/actions'
+import { useAppDispatch, useAppSelector } from './hooks/store'
+import { fetchUser, setUser } from './store/actions'
 
 function App() {
   const dispatch = useAppDispatch()
+  const { localId } = useAppSelector(({ loginReducer }) => loginReducer)
+  const { userInfo } = useAppSelector(state => state.setUserReducer)
+
+  useEffect(() => {
+    if (localId) {
+      dispatch(fetchUser(localId))
+    }
+  }, [localId])
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(
+        setUser({
+          localId: userInfo.localId,
+          name: userInfo.name,
+          email: userInfo.email,
+        })
+      )
+    }
+  }, [userInfo])
 
   useEffect(() => {
     const user = localStorage.getItem('userId')
@@ -17,7 +37,7 @@ function App() {
       : null
 
     dispatch(setUser(user))
-  })
+  }, [])
 
   return <AppRouter />
 }

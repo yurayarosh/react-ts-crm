@@ -1,13 +1,11 @@
 import {
   ActionLogin,
-  // ActionLogout,
   ActionRegister,
   ActionSetUser,
   ActionTypes,
   AuthAction,
   IAuthState,
   ILoginState,
-  // ILogoutState,
   IRegisterState,
   ISetUserState,
 } from '../actions/types'
@@ -75,9 +73,22 @@ export const setUserReducer = (
     case ActionTypes.POST_USER_SUCCESS:
       return {
         ...state,
-        user: action.user,
       }
     case ActionTypes.POST_USER_ERROR:
+      return {
+        ...state,
+        error: action.error,
+      }
+    // case ActionTypes.FETCH_USER_START:
+    //   return {
+    //     ...state,
+    //   }
+    case ActionTypes.FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        userInfo: action.userInfo,
+      }
+    case ActionTypes.FETCH_USER_ERROR:
       return {
         ...state,
         error: action.error,
@@ -101,7 +112,7 @@ export const loginReducer = (
     case ActionTypes.LOGIN_SUCCESS:
       return {
         ...state,
-        user: action.user,
+        localId: action.localId,
         isLoading: false,
       }
     case ActionTypes.LOGIN_ERROR:
@@ -115,30 +126,3 @@ export const loginReducer = (
       return state
   }
 }
-
-// export const logoutReducer = (
-//   state: ILogoutState = { isLoading: false },
-//   action: ActionLogout
-// ): ILogoutState => {
-//   switch (action.type) {
-//     case ActionTypes.LOGOUT_START:
-//       return {
-//         ...state,
-//         isLoading: true,
-//       }
-//     case ActionTypes.LOGOUT_SUCCESS:
-//       return {
-//         ...state,
-//         isLoading: false,
-//       }
-//     case ActionTypes.LOGOUT_ERROR:
-//       return {
-//         ...state,
-//         error: action.error,
-//         isLoading: false,
-//       }
-
-//     default:
-//       return state
-//   }
-// }

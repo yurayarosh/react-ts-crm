@@ -14,6 +14,7 @@ import {
   ActionPostUser,
   ActionFetchUser,
   ActionSetUser,
+  IUserInfo,
   // ActionLogout,
 } from './types'
 
@@ -34,7 +35,6 @@ export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionSetUser
 export const postUser = (user: IUser) => async (dispatch: Dispatch<ActionPostUser>) => {
   try {
     const response = await fetch(
-      // `https://${process.env.REACT_APP_FIREBASE_PROJECT_ID}.firebaseio.com/users/${id}/info.json`,
       `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${user.localId}/info.json`,
       {
         method: 'post',
@@ -45,7 +45,7 @@ export const postUser = (user: IUser) => async (dispatch: Dispatch<ActionPostUse
     // const data = await response.json()
 
     if (response.ok) {
-      dispatch({ type: ActionTypes.POST_USER_SUCCESS, user })
+      dispatch({ type: ActionTypes.POST_USER_SUCCESS })
     } else {
       dispatch({
         type: ActionTypes.POST_USER_ERROR,
@@ -65,11 +65,15 @@ export const fetchUser = (localId: string) => async (dispatch: Dispatch<ActionFe
       `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
     )
     const data = await response.json()
-
-    console.log({ data })
+    const userInfo: IUserInfo = data[Object.keys(data)[0]]
 
     if (response.ok) {
-      dispatch({ type: ActionTypes.FETCH_CURRENCY_SUCCESS, user: {} })
+      console.log('fetch user success', { data })
+
+      dispatch({
+        type: ActionTypes.FETCH_USER_SUCCESS,
+        userInfo,
+      })
     } else {
       dispatch({ type: ActionTypes.FETCH_USER_ERROR, error: '' })
     }
@@ -122,9 +126,7 @@ export const login = (loginData: ILoginData) => async (dispatch: Dispatch<Action
     const data: ILoginResponse = await response.json()
 
     if (response.ok) {
-      console.log({ data })
-
-      // dispatch(fetchUser(data.localId))
+      dispatch({ type: ActionTypes.LOGIN_SUCCESS, localId: data.localId })
     } else {
       dispatch({
         type: ActionTypes.LOGIN_ERROR,
