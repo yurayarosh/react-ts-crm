@@ -1,4 +1,5 @@
-import { AsideAction, IAsideState, ActionTypes } from '../actions/types'
+import { ActionTypes } from '../actions/types'
+import { AsideAction, IAsideState } from '../actions/types/aside'
 
 export const asideReducer = (state: IAsideState = { isOpen: true }, action: AsideAction) => {
   switch (action.type) {

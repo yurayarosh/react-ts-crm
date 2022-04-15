@@ -1,32 +1,7 @@
-import {
-  ActionLogin,
-  ActionRegister,
-  ActionSetUser,
-  ActionTypes,
-  AuthAction,
-  IAuthState,
-  ILoginState,
-  IRegisterState,
-  ISetUserState,
-} from '../actions/types'
-
-export const authReducer = (state: IAuthState = { isAuth: false }, action: AuthAction) => {
-  switch (action.type) {
-    case ActionTypes.SET_AUTH_TRUE:
-      return {
-        ...state,
-        isAuth: true,
-      }
-    case ActionTypes.SET_AUTH_FALSE:
-      return {
-        ...state,
-        isAuth: false,
-      }
-
-    default:
-      return state
-  }
-}
+import { ActionTypes } from '../actions/types'
+import { ActionLogin, ILoginState } from '../actions/types/login'
+import { ActionRegister, IRegisterState } from '../actions/types/register'
+import { ActionSetUser, ISetUserState } from '../actions/types/setUser'
 
 export const registerReducer = (
   state: IRegisterState = { isLoading: false },

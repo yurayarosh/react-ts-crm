@@ -1,22 +1,9 @@
 import { Dispatch } from 'redux'
-import {
-  ActionRegister,
-  ActionTypes,
-  ActionLogin,
-  CurrencyAction,
-  ICurrencyData,
-  IRegisterFormData,
-  IRegisterResponseData,
-  IUser,
-  ILoginState,
-  ILoginData,
-  ILoginResponse,
-  ActionPostUser,
-  ActionFetchUser,
-  ActionSetUser,
-  IUserInfo,
-  // ActionLogout,
-} from './types'
+import { ActionTypes } from './types'
+import { CurrencyAction, ICurrencyData } from './types/currency'
+import { ActionLogin, ILoginData, ILoginResponse } from './types/login'
+import { ActionRegister, IRegisterFormData, IRegisterResponseData } from './types/register'
+import { ActionFetchUser, ActionPostUser, ActionSetUser, IUser, IUserInfo } from './types/setUser'
 
 export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionSetUser>) => {
   if (user?.localId && user.name && user.email) {

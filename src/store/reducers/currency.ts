@@ -1,4 +1,5 @@
-import { ActionTypes, CurrencyAction, ICurrencyState } from '../actions/types'
+import { ActionTypes } from '../actions/types'
+import { CurrencyAction, ICurrencyState } from '../actions/types/currency'
 
 export const currencyReducer = (
   state: ICurrencyState = { isLoading: false, data: null },
