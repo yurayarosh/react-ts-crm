@@ -23,7 +23,7 @@ const Login: FC = () => {
     if (error) showToastError(error)
   }, [error])
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     setFormTouched(true)
 
     const isValid = !emailError.error && !passwordError.error

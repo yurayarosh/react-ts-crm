@@ -3,46 +3,88 @@ import { ActionTypes } from './types'
 import { CurrencyAction, ICurrencyData } from './types/currency'
 import { ActionLogin, ILoginData, ILoginResponse } from './types/login'
 import { ActionRegister, IRegisterFormData, IRegisterResponseData } from './types/register'
-import { ActionFetchUser, ActionPostUser, ActionSetUser, IUser, IUserInfo } from './types/setUser'
+import {
+  ActionFetchUser,
+  ActionPostUser,
+  ActionSetUser,
+  ActionUpdateUser,
+  IPostUserResponse,
+  IUser,
+  // IUserInfo,
+} from './types/setUser'
 
-export const setUser = (user: IUser | null) => (dispatch: Dispatch<ActionSetUser>) => {
-  if (user?.localId && user.name && user.email) {
-    localStorage.setItem('userId', user.localId)
-    localStorage.setItem('userName', user.name)
-    localStorage.setItem('userEmail', user.email)
-  } else {
-    localStorage.removeItem('userId')
-    localStorage.removeItem('userName')
-    localStorage.removeItem('userEmail')
+export const setUser =
+  ({ userInfoName, user }: { userInfoName?: string; user: IUser | null }) =>
+  (dispatch: Dispatch<ActionSetUser>) => {
+    if (user?.localId && userInfoName) {
+      localStorage.setItem('userId', user.localId)
+      localStorage.setItem('userInfoName', userInfoName)
+      dispatch({ type: ActionTypes.SET_USER, user })
+    } else {
+      localStorage.removeItem('userId')
+      localStorage.removeItem('userInfoName')
+
+      dispatch({ type: ActionTypes.SET_USER, user: null })
+    }
   }
 
-  dispatch({ type: ActionTypes.SET_USER, user })
-}
+export const postUser =
+  (localId: string, userInfo: IUser) => async (dispatch: Dispatch<ActionPostUser>) => {
+    try {
+      const response = await fetch(
+        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`,
+        {
+          method: 'post',
+          body: JSON.stringify(userInfo),
+        }
+      )
 
-export const postUser = (user: IUser) => async (dispatch: Dispatch<ActionPostUser>) => {
-  try {
-    const response = await fetch(
-      `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${user.localId}/info.json`,
-      {
-        method: 'post',
-        body: JSON.stringify(user),
+      const data: IPostUserResponse = await response.json()
+
+      if (response.ok) {
+        dispatch({ type: ActionTypes.POST_USER_SUCCESS, userInfoName: data.name })
+      } else {
+        dispatch({
+          type: ActionTypes.POST_USER_ERROR,
+          error: `Post user error ${response.statusText}`,
+        })
       }
-    )
+    } catch (error) {
+      dispatch({ type: ActionTypes.POST_USER_ERROR, error: `Post user server errror: ${error}` })
+    }
+  }
 
-    // const data = await response.json()
+export const updateUser =
+  (localId: string, user: IUser) => async (dispatch: Dispatch<ActionUpdateUser>) => {
+    try {
+      const userInfoName = localStorage.getItem('userInfoName')
 
-    if (response.ok) {
-      dispatch({ type: ActionTypes.POST_USER_SUCCESS })
-    } else {
+      const response = await fetch(
+        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info/${userInfoName}.json`,
+        {
+          method: 'put',
+          body: JSON.stringify(user),
+        }
+      )
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log('update user success', { data })
+        dispatch({ type: ActionTypes.UPDATE_USER_SUCCESS, user })
+      } else {
+        dispatch({
+          type: ActionTypes.UPDATE_USER_ERROR,
+          error: `Update user error ${response.statusText}`,
+        })
+      }
+    } catch (error) {
       dispatch({
-        type: ActionTypes.POST_USER_ERROR,
-        error: `Post user error ${response.statusText}`,
+        type: ActionTypes.UPDATE_USER_ERROR,
+        error: `Update user server errror: ${error}`,
       })
     }
-  } catch (error) {
-    dispatch({ type: ActionTypes.POST_USER_ERROR, error: `Post user server errror: ${error}` })
   }
-}
 
 export const fetchUser = (localId: string) => async (dispatch: Dispatch<ActionFetchUser>) => {
   try {
@@ -51,15 +93,14 @@ export const fetchUser = (localId: string) => async (dispatch: Dispatch<ActionFe
     const response = await fetch(
       `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
     )
-    const data = await response.json()
-    const userInfo: IUserInfo = data[Object.keys(data)[0]]
+    const userInfoName = localStorage.getItem('userInfoName')
+    const data: { [key: string]: IUser } = await response.json()
+    const userInfo: IUser | null = userInfoName ? data[userInfoName] : null
 
     if (response.ok) {
-      console.log('fetch user success', { data })
-
       dispatch({
         type: ActionTypes.FETCH_USER_SUCCESS,
-        userInfo,
+        user: userInfo,
       })
     } else {
       dispatch({ type: ActionTypes.FETCH_USER_ERROR, error: '' })

@@ -2,6 +2,7 @@ import { ComponentType } from 'react'
 import Categories from '../pages/Categories/Categories'
 import Home from '../pages/Home/Home'
 import Login from '../pages/Login/Login'
+import Profile from '../pages/Profile/Profile'
 import Register from '../pages/Register/Register'
 
 export interface IRoute {
@@ -44,6 +45,10 @@ export const privateRoutes: IRoute[] = [
   {
     path: RouteNames.CATEGORIES,
     Component: Categories,
+  },
+  {
+    path: RouteNames.PROFILE,
+    Component: Profile,
   },
   // {
   //   path: RouteNames.EVENT,

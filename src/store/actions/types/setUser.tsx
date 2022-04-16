@@ -1,36 +1,41 @@
 export interface IUser {
-  email: string | null
-  name: string | null
-  localId: string | null
+  email?: string | null
+  name?: string | null
+  localId?: string | null
 }
 
-export interface IUserInfo {
-  email: string
-  localId: string
+export interface IPostUserResponse {
   name: string
 }
 
 export interface ISetUserState {
-  userInfo?: IUserInfo
   user?: IUser | null
+  userInfoName?: string
   error?: string
 }
 
 export interface ActionPostUser {
   type: string
   user?: IUser | null
+  userInfoName?: string
   error?: string
 }
 
 export interface ActionSetUser {
   type: string
   user?: IUser | null
-  userInfo?: IUserInfo
+  userInfoName?: string
   error?: string
 }
 
 export interface ActionFetchUser {
   type: string
   localId?: string
+  error?: string
+}
+
+export interface ActionUpdateUser {
+  type: string
+  user?: IUser
   error?: string
 }

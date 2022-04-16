@@ -48,6 +48,7 @@ export const setUserReducer = (
     case ActionTypes.POST_USER_SUCCESS:
       return {
         ...state,
+        userInfoName: action.userInfoName,
       }
     case ActionTypes.POST_USER_ERROR:
       return {
@@ -61,13 +62,23 @@ export const setUserReducer = (
     case ActionTypes.FETCH_USER_SUCCESS:
       return {
         ...state,
-        userInfo: action.userInfo,
+        user: action.user,
       }
     case ActionTypes.FETCH_USER_ERROR:
       return {
         ...state,
         error: action.error,
       }
+      case ActionTypes.UPDATE_USER_SUCCESS:
+        return {
+          ...state,
+          user: action.user,
+        }
+      case ActionTypes.UPDATE_USER_ERROR:
+        return {
+          ...state,
+          error: action.error,
+        }
 
     default:
       return state

@@ -1,6 +1,8 @@
 import M from 'materialize-css'
 import { createRef, FC, MouseEvent, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import { RouteNames } from '../../router'
 import { setUser } from '../../store/actions'
 import { ActionTypes } from '../../store/actions/types'
 import Clock from '../Clock/Clock'
@@ -26,7 +28,7 @@ const Navbar: FC = () => {
   const logout = (e: MouseEvent) => {
     e.preventDefault()
 
-    dispatch(setUser(null))
+    dispatch(setUser({ user: null }))
   }
 
   return (
@@ -55,10 +57,9 @@ const Navbar: FC = () => {
 
             <ul id="dropdown" className="dropdown-content">
               <li>
-                {/* to="profile" */}
-                <a className="black-text">
+                <Link to={RouteNames.PROFILE} className="black-text">
                   <i className="material-icons">account_circle</i>Профиль
-                </a>
+                </Link>
               </li>
               <li className="divider" tabIndex={-1} />
               <li>

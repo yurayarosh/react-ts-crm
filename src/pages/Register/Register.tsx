@@ -21,10 +21,13 @@ const Register: FC = () => {
 
   const dispatch = useAppDispatch()
   const { data, error, isLoading } = useAppSelector(({ registerReducer }) => registerReducer)
-  // const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
+  const { userInfoName } = useAppSelector(({ setUserReducer }) => setUserReducer)
 
   useEffect(() => {
     if (error) showToastError(error)
+  }, [error])
+
+  useEffect(() => {
     if (data?.localId) {
       const user = {
         name,
@@ -32,12 +35,23 @@ const Register: FC = () => {
         localId: data.localId,
       }
 
-      dispatch(setUser(user))
-      dispatch(postUser(user))
+      dispatch(postUser(data.localId, user))
     }
-  }, [data, error])
+  }, [data])
 
-  const onSubmit = async (e: FormEvent) => {
+  useEffect(() => {
+    if (data?.localId) {
+      const user = {
+        name,
+        email,
+        localId: data.localId,
+      }
+
+      dispatch(setUser({ userInfoName, user }))
+    }
+  }, [userInfoName])
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setFormTouched(true)
 
     const isValid = !emailError.error && !nameError.error && !passwordError.error && !hasTermsError

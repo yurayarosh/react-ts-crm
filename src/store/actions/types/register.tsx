@@ -10,7 +10,6 @@ export interface IRegisterResponseData {
 export interface IRegisterFormData {
   email: string
   password: string
-  name?: string
 }
 
 export interface IRegisterState {
