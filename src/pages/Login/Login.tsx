@@ -7,7 +7,7 @@ import Input from '../../components/UI/Input/Input'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
-import { login } from '../../store/actions'
+import { login } from '../../store/actions/login'
 
 const Login: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)

@@ -7,7 +7,8 @@ import Input from '../../components/UI/Input/Input'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
-import { postUser, register, setUser } from '../../store/actions'
+import { register } from '../../store/actions/register'
+import { postUser, setUser } from '../../store/actions/setUser'
 
 const Register: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)

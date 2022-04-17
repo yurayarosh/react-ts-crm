@@ -3,7 +3,7 @@ import { createRef, FC, MouseEvent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { RouteNames } from '../../router'
-import { setUser } from '../../store/actions'
+import { setUser } from '../../store/actions/setUser'
 import { ActionTypes } from '../../store/actions/types'
 import Clock from '../Clock/Clock'
 

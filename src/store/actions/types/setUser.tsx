@@ -31,6 +31,8 @@ export interface ActionSetUser {
 export interface ActionFetchUser {
   type: string
   localId?: string
+  user?: IUser | null
+  userInfoName?: string
   error?: string
 }
 

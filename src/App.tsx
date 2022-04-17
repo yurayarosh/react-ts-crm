@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import AppRouter from './components/AppRouter/AppRouter'
 import { useAppDispatch, useAppSelector } from './hooks/store'
-import { fetchUser, setUser } from './store/actions'
+import { fetchUser, setUser } from './store/actions/setUser'
 
 function App() {
   const [isLoaded, setLoaded] = useState<boolean>(false)

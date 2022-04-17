@@ -3,7 +3,7 @@ import Bill from '../../components/Bill/Bill'
 import Currency from '../../components/Currency/Currency'
 import { useAppDispatch } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
-import { fetchCurrency } from '../../store/actions'
+import { fetchCurrency } from '../../store/actions/currency'
 
 const Home: FC = () => {
   const dispatch = useAppDispatch()

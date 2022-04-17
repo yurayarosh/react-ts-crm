@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { fetchCurrency } from '../../store/actions'
+import { fetchCurrency } from '../../store/actions/currency'
 
 const Currency: FC = () => {
   const currencies = ['UAH', 'EUR', 'USD']

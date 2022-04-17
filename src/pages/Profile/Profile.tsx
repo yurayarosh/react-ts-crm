@@ -4,7 +4,7 @@ import { IInputError, simpleInputValidate } from '../../assets/scripts/validatio
 import Input from '../../components/UI/Input/Input'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
-import { updateUser } from '../../store/actions'
+import { updateUser } from '../../store/actions/setUser'
 import { IUser } from '../../store/actions/types/setUser'
 
 const Profile: FC = () => {
