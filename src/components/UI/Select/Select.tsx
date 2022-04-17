@@ -1,18 +1,22 @@
 import classNames from 'classnames'
-import { ChangeEvent, FC, FocusEvent, InputHTMLAttributes, useEffect, useState } from 'react'
+import { ChangeEvent, FC, FocusEvent, SelectHTMLAttributes, useEffect, useState } from 'react'
 import { UID } from '../../../assets/scripts/helpers'
 import { ErrorMessages } from '../../../assets/scripts/validation'
 
-interface IInput extends InputHTMLAttributes<HTMLInputElement> {
+interface ISelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string
   hasError: boolean
+  options: Array<{
+    title: string
+    id: string | number
+  }>
   errorMessage?: string | null
-  onCustomChange?: (e: ChangeEvent<HTMLInputElement>) => void
-  onCustomFocus?: (e: FocusEvent<HTMLInputElement>) => void
-  onCustomBlur?: (e: FocusEvent<HTMLInputElement>) => void
+  onCustomChange?: (e: ChangeEvent<HTMLSelectElement>) => void
+  onCustomFocus?: (e: FocusEvent<HTMLSelectElement>) => void
+  onCustomBlur?: (e: FocusEvent<HTMLSelectElement>) => void
 }
 
-const Input: FC<IInput> = props => {
+const Select: FC<ISelectProps> = props => {
   const {
     className,
     value: inputValue,
@@ -21,6 +25,7 @@ const Input: FC<IInput> = props => {
     hasError,
     value: fieldValue,
     errorMessage = ErrorMessages.EMPTY,
+    options,
     onCustomChange,
     onCustomFocus,
     onCustomBlur,
@@ -35,35 +40,39 @@ const Input: FC<IInput> = props => {
     if (typeof inputValue === 'string' || typeof inputValue === 'number') setValue(inputValue)
   }, [])
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onCustomChange?.(e)
     setValue(e.target.value)
   }
 
-  const onFocus = (e: FocusEvent<HTMLInputElement>) => {
+  const onFocus = (e: FocusEvent<HTMLSelectElement>) => {
     onCustomFocus?.(e)
     setFocus(true)
   }
 
-  const onBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const onBlur = (e: FocusEvent<HTMLSelectElement>) => {
     onCustomBlur?.(e)
     setFocus(false)
   }
-
   return (
-    <div className="input-field">
-      <input
-        className={classNames('validate', className, { invalid: hasError })}
+    <div>
+      <label htmlFor="_uid">{label}</label>
+      <select
+        className={classNames('browser-default', className, { invalid: hasError })}
         id={uid}
         value={value}
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
         {...attrs}
-      />
-      <label htmlFor={uid} className={classNames({ active: !!value || hasFocus })}>
-        {label}
-      </label>
+      >
+        {options.map(({ title, id }) => (
+          <option key={id} value={id}>
+            {title}
+          </option>
+        ))}
+      </select>
+
       {hasError && errorMessage ? (
         <small className="helper-text invalid">{errorMessage}</small>
       ) : (
@@ -73,4 +82,4 @@ const Input: FC<IInput> = props => {
   )
 }
 
-export default Input
+export default Select

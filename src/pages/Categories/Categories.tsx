@@ -1,4 +1,6 @@
 import { FC } from 'react'
+import CategoriesAddForm from '../../components/CategoriesAddForm/CategoriesAddForm'
+import CategoriesEditForm from '../../components/CategoriesEditForm/CategoriesEditForm'
 import LayoutDafault from '../../layouts/LayoutDefault'
 
 const Categories: FC = () => {
@@ -9,10 +11,12 @@ const Categories: FC = () => {
       </div>
       <section>
         <div className="row">
-          <div className="col s12 m6">{/* <categories-add-form /> */}</div>
+          <div className="col s12 m6">
+            <CategoriesAddForm />
+          </div>
 
           <div className="col s12 m6">
-            {/* <categories-edit-form :categories="categories" /> */}
+            <CategoriesEditForm />
           </div>
         </div>
       </section>
