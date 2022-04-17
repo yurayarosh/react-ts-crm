@@ -70,7 +70,6 @@ export const updateUser =
       const data = await response.json()
 
       if (response.ok) {
-        console.log('update user success', { data })
         dispatch({ type: ActionTypes.UPDATE_USER_SUCCESS, user })
       } else {
         dispatch({
@@ -93,13 +92,15 @@ export const fetchUser = (localId: string) => async (dispatch: Dispatch<ActionFe
     const response = await fetch(
       `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
     )
-    const userInfoName = localStorage.getItem('userInfoName')
+    
     const data: { [key: string]: IUser } = await response.json()
+    const [userInfoName] = Object.keys(data)
     const userInfo: IUser | null = userInfoName ? data[userInfoName] : null
 
     if (response.ok) {
       dispatch({
         type: ActionTypes.FETCH_USER_SUCCESS,
+        userInfoName,
         user: userInfo,
       })
     } else {

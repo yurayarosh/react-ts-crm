@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { ChangeEvent, FC, FocusEvent, InputHTMLAttributes, useState } from 'react'
+import { ChangeEvent, FC, FocusEvent, InputHTMLAttributes, useEffect, useState } from 'react'
 import { UID } from '../../../assets/scripts/helpers'
 import { ErrorMessages } from '../../../assets/scripts/validation'
 
@@ -15,9 +15,11 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
 const Input: FC<IInput> = props => {
   const {
     className,
+    value: inputValue,
     children,
     label,
     hasError,
+    value: fieldValue,
     errorMessage = ErrorMessages.EMPTY,
     onCustomChange,
     onCustomFocus,
@@ -28,6 +30,10 @@ const Input: FC<IInput> = props => {
   const [value, setValue] = useState<string>('')
   const [hasFocus, setFocus] = useState<boolean>(false)
   const uid = UID()
+
+  useEffect(() => {
+    if (typeof inputValue === 'string') setValue(inputValue)
+  }, [])
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     onCustomChange?.(e)

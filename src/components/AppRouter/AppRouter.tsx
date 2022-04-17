@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks/store'
 const AppRouter = () => {
   const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
 
-  return user?.localId ? (
+  return user ? (
     <Routes>
       {privateRoutes.map(({ path, Component }) => (
         <Route path={path} element={<Component />} key={path} />

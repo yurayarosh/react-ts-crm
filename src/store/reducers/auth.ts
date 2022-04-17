@@ -63,22 +63,23 @@ export const setUserReducer = (
       return {
         ...state,
         user: action.user,
+        userInfoName: action.userInfoName,
       }
     case ActionTypes.FETCH_USER_ERROR:
       return {
         ...state,
         error: action.error,
       }
-      case ActionTypes.UPDATE_USER_SUCCESS:
-        return {
-          ...state,
-          user: action.user,
-        }
-      case ActionTypes.UPDATE_USER_ERROR:
-        return {
-          ...state,
-          error: action.error,
-        }
+    case ActionTypes.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        user: action.user,
+      }
+    case ActionTypes.UPDATE_USER_ERROR:
+      return {
+        ...state,
+        error: action.error,
+      }
 
     default:
       return state

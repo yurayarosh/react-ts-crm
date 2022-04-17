@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react'
+import { showToast } from '../../assets/scripts/helpers'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Input from '../../components/UI/Input/Input'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
@@ -9,10 +10,11 @@ import { IUser } from '../../store/actions/types/setUser'
 const Profile: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
   const [nameError, setNameError] = useState<IInputError>({ error: true })
-  const [name, setName] = useState<string>('')
 
   const dispatch = useAppDispatch()
   const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
+
+  const [name, setName] = useState<string>(user?.name || '')
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const validation = simpleInputValidate({
@@ -36,14 +38,14 @@ const Profile: FC = () => {
     const isValid = !nameError.error
 
     if (isValid) {
-      console.log({ user })
-
       const newInfo: IUser = {
         ...user,
         name,
       }
 
       if (user?.localId) dispatch(updateUser(user.localId, newInfo))
+
+      showToast(`User name was succesfully changed to "${name}"`)
     }
   }
 
@@ -58,6 +60,7 @@ const Profile: FC = () => {
           name="username"
           type="text"
           label="Имя"
+          value={name}
           hasError={isFormTouched && nameError.error}
           errorMessage={nameError.text}
           onCustomChange={onInputChange}

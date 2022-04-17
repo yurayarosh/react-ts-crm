@@ -7,17 +7,11 @@ import { fetchUser, setUser } from './store/actions'
 function App() {
   const [isLoaded, setLoaded] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  const { user } = useAppSelector(state => state.setUserReducer)
+  const { user, userInfoName } = useAppSelector(state => state.setUserReducer)
   const { localId } = useAppSelector(state => state.loginReducer)
 
   const setCurrentUser = () => {
-    const userInfoName = localStorage.getItem('userInfoName')
-
-    console.log('setting user start', { userInfoName, user })
-
     if (userInfoName && user?.localId && user.name && user.email) {
-      console.log('setting user success')
-
       dispatch(
         setUser({
           userInfoName,
@@ -28,24 +22,15 @@ function App() {
   }
 
   useEffect(() => {
-    // const userInfoName = localStorage.getItem('userInfoName')
-
-    // if (userInfoName && user?.localId && user.name && user.email) {
-    //   dispatch(
-    //     setUser({
-    //       userInfoName,
-    //       user,
-    //     })
-    //   )
-
-    //   setLoaded(true)
-    // }
     setCurrentUser()
-    setLoaded(true)
+    if (user) setLoaded(true)
   }, [user])
 
   useEffect(() => {
-    if (localId) setCurrentUser()
+    if (localId) {
+      dispatch(fetchUser(localId))
+      setCurrentUser()
+    }
   }, [localId])
 
   useEffect(() => {
