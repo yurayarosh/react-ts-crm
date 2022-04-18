@@ -4,6 +4,7 @@ import thunk, { ThunkMiddleware } from 'redux-thunk'
 import { asideReducer } from './reducers/aside'
 import { registerReducer, loginReducer, setUserReducer } from './reducers/auth'
 import { currencyReducer } from './reducers/currency'
+import { categoriesReducer } from './reducers/categories'
 
 const rootReducer = combineReducers({
   asideReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   loginReducer,
   setUserReducer,
   currencyReducer,
+  categoriesReducer,
 })
 
 export const store = createStore(

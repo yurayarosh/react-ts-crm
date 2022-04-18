@@ -2,6 +2,7 @@ export interface IUser {
   email?: string | null
   name?: string | null
   localId?: string | null
+  bill?: string | number | null
 }
 
 export interface IPostUserResponse {

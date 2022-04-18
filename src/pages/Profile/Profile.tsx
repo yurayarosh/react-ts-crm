@@ -12,7 +12,7 @@ const Profile: FC = () => {
   const [nameError, setNameError] = useState<IInputError>({ error: true })
 
   const dispatch = useAppDispatch()
-  const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
+  const { user, userInfoName } = useAppSelector(({ setUserReducer }) => setUserReducer)
 
   const [name, setName] = useState<string>(user?.name || '')
 
@@ -37,10 +37,12 @@ const Profile: FC = () => {
 
     const isValid = !nameError.error
 
-    if (isValid) {
-      const newInfo: IUser = {
-        ...user,
-        name,
+    if (isValid && userInfoName) {
+      const newInfo: { [key: string]: IUser } = {
+        [userInfoName]: {
+          ...user,
+          name,
+        },
       }
 
       if (user?.localId) dispatch(updateUser(user.localId, newInfo))

@@ -14,11 +14,9 @@ export const setUser =
   (dispatch: Dispatch<ActionSetUser>) => {
     if (user?.localId && userInfoName) {
       localStorage.setItem('userId', user.localId)
-      localStorage.setItem('userInfoName', userInfoName)
       dispatch({ type: ActionTypes.SET_USER, user })
     } else {
       localStorage.removeItem('userId')
-      localStorage.removeItem('userInfoName')
 
       dispatch({ type: ActionTypes.SET_USER, user: null })
     }
@@ -51,9 +49,11 @@ export const postUser =
   }
 
 export const updateUser =
-  (localId: string, user: IUser) => async (dispatch: Dispatch<ActionUpdateUser>) => {
+  (localId: string, userInfo: { [key: string]: IUser }) =>
+  async (dispatch: Dispatch<ActionUpdateUser>) => {
     try {
-      const userInfoName = localStorage.getItem('userInfoName')
+      const [userInfoName] = Object.keys(userInfo)
+      const [user] = Object.values(userInfo)
 
       const response = await fetch(
         `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info/${userInfoName}.json`,

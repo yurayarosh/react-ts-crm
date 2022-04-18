@@ -7,6 +7,7 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   hasError: boolean
   errorMessage?: string | null
+  value?: string | number
   onCustomChange?: (e: ChangeEvent<HTMLInputElement>) => void
   onCustomFocus?: (e: FocusEvent<HTMLInputElement>) => void
   onCustomBlur?: (e: FocusEvent<HTMLInputElement>) => void
@@ -15,11 +16,10 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
 const Input: FC<IInput> = props => {
   const {
     className,
-    value: inputValue,
+    value: inputValue = '',
     children,
     label,
     hasError,
-    value: fieldValue,
     errorMessage = ErrorMessages.EMPTY,
     onCustomChange,
     onCustomFocus,
@@ -27,13 +27,13 @@ const Input: FC<IInput> = props => {
     ...attrs
   } = props
 
-  const [value, setValue] = useState<string | number>('')
+  const [value, setValue] = useState<string | number>(inputValue)
   const [hasFocus, setFocus] = useState<boolean>(false)
   const uid = UID()
 
   useEffect(() => {
-    if (typeof inputValue === 'string' || typeof inputValue === 'number') setValue(inputValue)
-  }, [])
+    setValue(inputValue)
+  }, [inputValue])
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     onCustomChange?.(e)

@@ -1,17 +1,26 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react'
+import { showToast, UID } from '../../assets/scripts/helpers'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
-import { useAppDispatch } from '../../hooks/store'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import { createCategory } from '../../store/actions/categories'
 import Form from '../Form/Form'
 import Input from '../UI/Input/Input'
 
 const CategoriesAddForm: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
   const [categoryName, setCategoryName] = useState<string>('')
-  const [limit, setLimit] = useState<string>('')
+  const [limit, setLimit] = useState<number | string>('')
   const [categoryNameError, setCategoryNameError] = useState<IInputError>({ error: true })
   const [limitError, setLimitError] = useState<IInputError>({ error: true })
 
   const dispatch = useAppDispatch()
+  const { user } = useAppSelector(({ setUserReducer }) => setUserReducer)
+
+  const resetForm = () => {
+    setCategoryName('')
+    setLimit('')
+    setFormTouched(false)
+  }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -20,13 +29,11 @@ const CategoriesAddForm: FC = () => {
     const isValid = !categoryNameError.error && !limitError.error
 
     if (isValid) {
-      console.log({
-        categoryName,
-        limit,
-      })
-
-      // dispatch(createCategory({ name: categoryName, limit }))
-
+      if (user?.localId) {
+        dispatch(createCategory(user.localId, { id: UID(), name: categoryName, limit }))
+        resetForm()
+        showToast(`Category "${categoryName}" was successfully created!`)
+      }
     }
   }
 
@@ -63,6 +70,7 @@ const CategoriesAddForm: FC = () => {
         name="category-name"
         type="text"
         label="Название"
+        value={categoryName}
         hasError={isFormTouched && categoryNameError.error}
         errorMessage={categoryNameError.text}
         onCustomChange={onInputChange}
@@ -72,6 +80,7 @@ const CategoriesAddForm: FC = () => {
         name="limit"
         type="number"
         label="Лимит"
+        value={limit}
         hasError={isFormTouched && limitError.error}
         errorMessage={limitError.text}
         onCustomChange={onInputChange}

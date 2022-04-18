@@ -2,14 +2,12 @@ import classNames from 'classnames'
 import { ChangeEvent, FC, FocusEvent, SelectHTMLAttributes, useEffect, useState } from 'react'
 import { UID } from '../../../assets/scripts/helpers'
 import { ErrorMessages } from '../../../assets/scripts/validation'
+import { ICategory } from '../../../store/actions/types/categories'
 
 interface ISelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string
   hasError: boolean
-  options: Array<{
-    title: string
-    id: string | number
-  }>
+  options: ICategory[] | null
   errorMessage?: string | null
   onCustomChange?: (e: ChangeEvent<HTMLSelectElement>) => void
   onCustomFocus?: (e: FocusEvent<HTMLSelectElement>) => void
@@ -66,11 +64,12 @@ const Select: FC<ISelectProps> = props => {
         onBlur={onBlur}
         {...attrs}
       >
-        {options.map(({ title, id }) => (
-          <option key={id} value={id}>
-            {title}
-          </option>
-        ))}
+        {options &&
+          options.map(({ name, id }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
       </select>
 
       {hasError && errorMessage ? (

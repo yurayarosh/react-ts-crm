@@ -9,6 +9,7 @@ import LayoutForm from '../../layouts/LayoutForm'
 import { RouteNames } from '../../router'
 import { register } from '../../store/actions/register'
 import { postUser, setUser } from '../../store/actions/setUser'
+import { USER_START_BILL } from '../../utils'
 
 const Register: FC = () => {
   const [isFormTouched, setFormTouched] = useState(false)
@@ -34,6 +35,7 @@ const Register: FC = () => {
         name,
         email,
         localId: data.localId,
+        bill: USER_START_BILL,
       }
 
       dispatch(postUser(data.localId, user))
