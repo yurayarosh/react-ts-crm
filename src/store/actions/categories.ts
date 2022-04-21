@@ -12,7 +12,7 @@ export const createCategory =
     try {
       // dispatch({ type: ActionTypes.CREATE_CATEGORY_START })
       const response = await fetch(
-        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/categories.json`,
+        `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/categories.json`,
         {
           method: 'post',
           body: JSON.stringify(category),
@@ -41,7 +41,7 @@ export const fetchCategories =
   (localId: string) => async (dispatch: Dispatch<ActionCategories>) => {
     try {
       const response = await fetch(
-        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/categories.json`
+        `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/categories.json`
       )
 
       const categories: ICategories = await response.json()
@@ -72,7 +72,7 @@ export const updateCategory =
       const [cat] = Object.values(category)
 
       const response = await fetch(
-        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/categories/${categoryName}.json`,
+        `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/categories/${categoryName}.json`,
         {
           method: 'put',
           body: JSON.stringify(cat),

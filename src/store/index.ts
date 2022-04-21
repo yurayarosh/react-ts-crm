@@ -5,6 +5,7 @@ import { asideReducer } from './reducers/aside'
 import { registerReducer, loginReducer, setUserReducer } from './reducers/auth'
 import { currencyReducer } from './reducers/currency'
 import { categoriesReducer } from './reducers/categories'
+import { recordsReducer } from './reducers/records'
 
 const rootReducer = combineReducers({
   asideReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   setUserReducer,
   currencyReducer,
   categoriesReducer,
+  recordsReducer,
 })
 
 export const store = createStore(

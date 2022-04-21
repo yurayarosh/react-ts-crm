@@ -5,7 +5,7 @@ import { ErrorMessages } from '../../../assets/scripts/validation'
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   label: string
-  hasError: boolean
+  hasError?: boolean
   errorMessage?: string | null
   value?: string | number
   onCustomChange?: (e: ChangeEvent<HTMLInputElement>) => void

@@ -26,7 +26,7 @@ export const postUser =
   (localId: string, userInfo: IUser) => async (dispatch: Dispatch<ActionPostUser>) => {
     try {
       const response = await fetch(
-        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`,
+        `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/info.json`,
         {
           method: 'post',
           body: JSON.stringify(userInfo),
@@ -56,7 +56,7 @@ export const updateUser =
       const [user] = Object.values(userInfo)
 
       const response = await fetch(
-        `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info/${userInfoName}.json`,
+        `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/info/${userInfoName}.json`,
         {
           method: 'put',
           body: JSON.stringify(user),
@@ -86,7 +86,7 @@ export const fetchUser = (localId: string) => async (dispatch: Dispatch<ActionFe
     dispatch({ type: ActionTypes.FETCH_USER_START })
 
     const response = await fetch(
-      `https://new-crm-9f95d-default-rtdb.europe-west1.firebasedatabase.app/users/${localId}/info.json`
+      `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/info.json`
     )
 
     const data: { [key: string]: IUser } = await response.json()

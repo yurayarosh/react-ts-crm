@@ -2,7 +2,9 @@ import { ComponentType } from 'react'
 import Categories from '../pages/Categories/Categories'
 import Home from '../pages/Home/Home'
 import Login from '../pages/Login/Login'
+import Planning from '../pages/Planning/Planning'
 import Profile from '../pages/Profile/Profile'
+import Record from '../pages/Record/Record'
 import Register from '../pages/Register/Register'
 
 export interface IRoute {
@@ -23,10 +25,6 @@ export enum RouteNames {
 }
 
 export const publicRoutes: IRoute[] = [
-  // {
-  //   path: RouteNames.HOME,
-  //   Component: Home,
-  // },
   {
     path: RouteNames.LOGIN,
     Component: Login,
@@ -50,8 +48,12 @@ export const privateRoutes: IRoute[] = [
     path: RouteNames.PROFILE,
     Component: Profile,
   },
-  // {
-  //   path: RouteNames.EVENT,
-  //   Component: Event,
-  // },
+  {
+    path: RouteNames.PLANNING,
+    Component: Planning,
+  },
+  {
+    path: RouteNames.RECORD,
+    Component: Record,
+  },
 ]

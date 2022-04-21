@@ -6,9 +6,10 @@ import { ICategory } from '../../../store/actions/types/categories'
 
 interface ISelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string
-  hasError: boolean
+  hasError?: boolean
   options: ICategory[] | null
   errorMessage?: string | null
+  value?: string
   onCustomChange?: (e: ChangeEvent<HTMLSelectElement>) => void
   onCustomFocus?: (e: FocusEvent<HTMLSelectElement>) => void
   onCustomBlur?: (e: FocusEvent<HTMLSelectElement>) => void
@@ -17,7 +18,7 @@ interface ISelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 const Select: FC<ISelectProps> = props => {
   const {
     className,
-    value: inputValue,
+    value: inputValue = '',
     children,
     label,
     hasError,
@@ -30,13 +31,17 @@ const Select: FC<ISelectProps> = props => {
     ...attrs
   } = props
 
-  const [value, setValue] = useState<string | number>('')
+  const [value, setValue] = useState<string>(inputValue)
   const [hasFocus, setFocus] = useState<boolean>(false)
   const uid = UID()
 
   useEffect(() => {
     if (typeof inputValue === 'string' || typeof inputValue === 'number') setValue(inputValue)
   }, [])
+
+  useEffect(() => {
+    setValue(inputValue)
+  }, [inputValue])
 
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onCustomChange?.(e)
