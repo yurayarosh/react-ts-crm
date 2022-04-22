@@ -36,26 +36,23 @@ const Planning: FC = () => {
   const categoriesList: ICategory[] | null = useMemo(() => {
     if (!categories || !records) return null
 
-    for (const key in categories) {
-      if (Object.prototype.hasOwnProperty.call(categories, key)) {
-        const category = categories[key]
+    return Object.values(categories).map((category, i) => {
+      const key = Object.keys(categories)[i]
 
-        const spent: number = Object.values(records).reduce((acc, record) => {
-          if (record.categoryId !== key) return acc
+      const spent: number = Object.values(records).reduce((acc, record) => {
+        if (record.categoryId !== key) return acc
 
-          const INDEX = record.expenseType === ExpencesTypes.INCOME ? 1 : -1
-          const expense = +record.amount * INDEX
+        const INDEX = record.expenseType === ExpencesTypes.INCOME ? 1 : -1
+        const expense = +record.amount * INDEX
 
-          return acc + expense
-        }, 0)
+        return acc + expense
+      }, 0)
 
-        category.spent = spent < 0 ? spent * -1 : 0
+      return {
+        ...category,
+        spent: spent < 0 ? spent * -1 : 0,
       }
-    }
-
-    const list = Object.values(categories)
-
-    return list
+    })
   }, [categories, records])
 
   if (!categoriesList?.length) return <div>loading...</div>
