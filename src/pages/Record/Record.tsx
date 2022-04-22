@@ -9,16 +9,16 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCategories } from '../../store/actions/categories'
 import { createRecord } from '../../store/actions/records'
+import { updateUser } from '../../store/actions/setUser'
 import { ICategory } from '../../store/actions/types/categories'
 import { ExpencesTypes, IRecord } from '../../store/actions/types/records'
-
-
+import { IUser } from '../../store/actions/types/setUser'
 
 const Record: FC = () => {
   const dispatch = useAppDispatch()
 
   const { categories } = useAppSelector(state => state.categoriesReducer)
-  const { user } = useAppSelector(state => state.setUserReducer)
+  const { user, userInfoName } = useAppSelector(state => state.setUserReducer)
 
   const [isFormTouched, setFormTouched] = useState(false)
 
@@ -120,7 +120,20 @@ const Record: FC = () => {
         categoryId: categoryName,
       }
 
-      if (user?.localId) dispatch(createRecord(user.localId, record))
+      if (user?.localId && user.bill && userInfoName) {
+        const INDEX = record.expenseType === ExpencesTypes.INCOME ? 1 : -1
+        const bill: number = +user.bill + +record.amount * INDEX
+
+        const newUserInfo: { [key: string]: IUser } = {
+          [userInfoName]: {
+            ...user,
+            bill,
+          },
+        }
+
+        dispatch(createRecord(user.localId, record))
+        dispatch(updateUser(user.localId, newUserInfo))
+      }
 
       if (categories) {
         setCategoryName(Object.keys(categories)[0])

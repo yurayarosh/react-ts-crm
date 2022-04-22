@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useMemo, useState } from 'react'
-import { UID } from '../../assets/scripts/helpers'
+import { showToast, UID } from '../../assets/scripts/helpers'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { updateCategory } from '../../store/actions/categories'
@@ -47,6 +47,8 @@ const CategoriesEditForm: FC<ICategoriesFormProps> = ({ categories }) => {
           },
         })
       )
+
+      showToast('Категория успешно обновлена!')
     }
   }
 

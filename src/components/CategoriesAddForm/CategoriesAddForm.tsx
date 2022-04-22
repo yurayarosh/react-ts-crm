@@ -32,7 +32,7 @@ const CategoriesAddForm: FC = () => {
       if (user?.localId) {
         dispatch(createCategory(user.localId, { id: UID(), name: categoryName, limit }))
         resetForm()
-        showToast(`Category "${categoryName}" was successfully created!`)
+        showToast(`Категория "${categoryName}" успешно создана!`)
       }
     }
   }
