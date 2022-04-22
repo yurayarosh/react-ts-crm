@@ -1,3 +1,8 @@
+export enum ExpencesTypes {
+  INCOME = 'INCOME',
+  OUTCOME = 'OUTCOME',
+}
+
 export interface IRecord {
   categoryId: string
   expenseType: string

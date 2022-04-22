@@ -2,6 +2,7 @@ export interface ICategory {
   id: string
   name: string
   limit: number | string
+  spent?: number
 }
 
 export interface ICategories {

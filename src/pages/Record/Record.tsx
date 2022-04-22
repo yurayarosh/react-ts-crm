@@ -10,12 +10,9 @@ import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCategories } from '../../store/actions/categories'
 import { createRecord } from '../../store/actions/records'
 import { ICategory } from '../../store/actions/types/categories'
-import { IRecord } from '../../store/actions/types/records'
+import { ExpencesTypes, IRecord } from '../../store/actions/types/records'
 
-enum ExpencesTypes {
-  INCOME = 'INCOME',
-  OUTCOME = 'OUTCOME',
-}
+
 
 const Record: FC = () => {
   const dispatch = useAppDispatch()

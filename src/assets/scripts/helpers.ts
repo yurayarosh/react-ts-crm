@@ -22,6 +22,10 @@ export const filterDate = (value: Date, format: String = '') => {
   return new Intl.DateTimeFormat('uk-UA', options).format(value)
 }
 
+export const filterCurrency = (value: number) => {
+  return new Intl.NumberFormat('uk-UA', { style: 'currency', currency: 'UAH' }).format(value)
+}
+
 export const UID = () => `uid-${Math.random().toString(36).slice(2, 9)}`
 
 export const showToast = (html: string) => M.toast({ html })

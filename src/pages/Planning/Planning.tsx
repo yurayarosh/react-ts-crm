@@ -1,16 +1,30 @@
+import classNames from 'classnames'
 import { FC, useEffect, useMemo } from 'react'
+import { filterCurrency } from '../../assets/scripts/helpers'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCategories } from '../../store/actions/categories'
 import { fetchRecords } from '../../store/actions/records'
 import { ICategory } from '../../store/actions/types/categories'
-import { IRecord } from '../../store/actions/types/records'
+import { ExpencesTypes, IRecord } from '../../store/actions/types/records'
 
 const Planning: FC = () => {
   const dispatch = useAppDispatch()
   const { categories } = useAppSelector(state => state.categoriesReducer)
   const { records } = useAppSelector(state => state.recordsReducer)
   const { user } = useAppSelector(state => state.setUserReducer)
+
+  const getExpensePercentage = (category: ICategory) =>
+    category.spent ? (+category.spent / +category.limit) * 100 : 0
+
+  const getColor = (percent: number) => {
+    let color
+    if (percent < 60) color = 'green'
+    else if (percent >= 100) color = 'red'
+    else color = 'yellow'
+
+    return color
+  }
 
   useEffect(() => {
     if (user?.localId) {
@@ -20,16 +34,29 @@ const Planning: FC = () => {
   }, [])
 
   const categoriesList: ICategory[] | null = useMemo(() => {
-    return categories ? Object.values(categories) : null
-  }, [categories])
+    if (!categories || !records) return null
 
-  const recordsList: IRecord[] | null = useMemo(() => {
-    return records ? Object.values(records) : null
-  }, [records])
+    for (const key in categories) {
+      if (Object.prototype.hasOwnProperty.call(categories, key)) {
+        const category = categories[key]
 
-  useEffect(() => {
-    console.log({ records })
-  }, [records])
+        const spent: number = Object.values(records).reduce((acc, record) => {
+          if (record.categoryId !== key) return acc
+
+          const INDEX = record.expenseType === ExpencesTypes.INCOME ? 1 : -1
+          const expense = +record.amount * INDEX
+
+          return acc + expense
+        }, 0)
+
+        category.spent = spent < 0 ? spent * -1 : 0
+      }
+    }
+
+    const list = Object.values(categories)
+
+    return list
+  }, [categories, records])
 
   if (!categoriesList?.length) return <div>loading...</div>
 
@@ -37,8 +64,7 @@ const Planning: FC = () => {
     <LayoutDafault>
       <div className="page-title">
         <h3>Планирование</h3>
-        {/* {{ bill | currency }} */}
-        <h4>8 320,00 грн.</h4>
+        <h4>{user?.bill && filterCurrency(+user.bill)}</h4>
       </div>
 
       {/* <v-preloader v-if="isLoading" /> */}
@@ -51,11 +77,14 @@ const Planning: FC = () => {
         {categoriesList.map(category => (
           <div key={category.id}>
             <p>
-              <strong>{category.name}:</strong>
-              spent из {category.limit}
+              <strong>{category.name}:</strong>&nbsp;
+              {filterCurrency(category.spent || 0)} из {filterCurrency(+category.limit)}
             </p>
             <div className="progress">
-              <div className="determinate" />
+              <div
+                className={classNames('determinate', getColor(getExpensePercentage(category)))}
+                style={{ width: `${getExpensePercentage(category)}%` }}
+              />
             </div>
           </div>
         ))}
