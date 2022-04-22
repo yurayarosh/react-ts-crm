@@ -6,7 +6,7 @@ import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCategories } from '../../store/actions/categories'
 import { fetchRecords } from '../../store/actions/records'
 import { ICategory } from '../../store/actions/types/categories'
-import { ExpencesTypes, IRecord } from '../../store/actions/types/records'
+import { ExpencesTypes } from '../../store/actions/types/records'
 
 const Planning: FC = () => {
   const dispatch = useAppDispatch()
@@ -64,28 +64,28 @@ const Planning: FC = () => {
         <h4>{user?.bill && filterCurrency(+user.bill)}</h4>
       </div>
 
-      {/* <v-preloader v-if="isLoading" /> */}
-
-      {/* <p v-else-if="!categories.length">Пока нет ни одной категории</p> */}
-
-      {/* <p v-else-if="!records.length">Пока нет ни одной записи</p> */}
-
-      <section>
-        {categoriesList.map(category => (
-          <div key={category.id}>
-            <p>
-              <strong>{category.name}:</strong>&nbsp;
-              {filterCurrency(category.spent || 0)} из {filterCurrency(+category.limit)}
-            </p>
-            <div className="progress">
-              <div
-                className={classNames('determinate', getColor(getExpensePercentage(category)))}
-                style={{ width: `${getExpensePercentage(category)}%` }}
-              />
+      {!categories ? (
+        <p>Пока нет ни одной категории</p>
+      ) : !records ? (
+        <p>Пока нет ни одной записи</p>
+      ) : (
+        <section>
+          {categoriesList.map(category => (
+            <div key={category.id}>
+              <p>
+                <strong>{category.name}:</strong>&nbsp;
+                {filterCurrency(category.spent || 0)} из {filterCurrency(+category.limit)}
+              </p>
+              <div className="progress">
+                <div
+                  className={classNames('determinate', getColor(getExpensePercentage(category)))}
+                  style={{ width: `${getExpensePercentage(category)}%` }}
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
+      )}
     </LayoutDafault>
   )
 }
