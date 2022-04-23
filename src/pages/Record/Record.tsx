@@ -7,7 +7,6 @@ import Radio from '../../components/UI/Radio/Radio'
 import Select from '../../components/UI/Select/Select'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
-import { fetchCategories } from '../../store/actions/categories'
 import { createRecord } from '../../store/actions/records'
 import { updateUser } from '../../store/actions/setUser'
 import { ICategory } from '../../store/actions/types/categories'
@@ -40,8 +39,6 @@ const Record: FC = () => {
   const [description, setDescription] = useState<string>('')
 
   useEffect(() => {
-    if (!categories && user?.localId) dispatch(fetchCategories(user.localId))
-
     const validation = simpleInputValidate({
       val: categoryName || '',
       required: true,
@@ -151,10 +148,6 @@ const Record: FC = () => {
 
   return (
     <LayoutDafault>
-      {/* <v-preloader v-if="isLoading" /> */}
-
-      {/* <p v-else-if="!categories.length">Пока нет ни одной категории</p> */}
-
       {!categoriesList?.length ? (
         <p>Пока нет ни одной категории</p>
       ) : (

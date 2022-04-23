@@ -3,26 +3,16 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { generateRandomColor, getSpentAmount } from '../../assets/scripts/helpers'
 import HistoryChart, { IChartData } from '../../components/Chart/Chart'
 import HistoryTable from '../../components/HistoryTable/HistoryTable'
-import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import Preloader from '../../components/Preloader/Preloader'
+import { useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
-import { fetchCategories } from '../../store/actions/categories'
-import { fetchRecords } from '../../store/actions/records'
 import { ExpencesTypes, ITableRecord } from '../../store/actions/types/records'
 
 import styles from './History.module.css'
 
 const History: FC = () => {
-  const dispatch = useAppDispatch()
   const { records } = useAppSelector(state => state.recordsReducer)
   const { categories } = useAppSelector(state => state.categoriesReducer)
-  const { user } = useAppSelector(state => state.setUserReducer)
-
-  useEffect(() => {
-    if (user?.localId) {
-      dispatch(fetchRecords(user.localId))
-      dispatch(fetchCategories(user.localId))
-    }
-  }, [])
 
   const recordsList: ITableRecord[] | null = useMemo(() => {
     return records && categories
@@ -36,7 +26,7 @@ const History: FC = () => {
             color,
             typeText,
             categoryName,
-            recordNameId: Object.keys(records)[i]
+            recordNameId: Object.keys(records)[i],
           }
         })
       : null
@@ -76,7 +66,7 @@ const History: FC = () => {
       ) : (
         <section>
           <div className={classNames('history-chart', styles['chart-wrap'])}>
-            {recordsChartData && <HistoryChart data={recordsChartData} />}
+            {recordsChartData ? <HistoryChart data={recordsChartData} /> : <Preloader />}
           </div>
 
           <HistoryTable records={recordsList} />

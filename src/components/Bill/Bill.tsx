@@ -18,7 +18,7 @@ const Bill: FC<BillProps> = ({ currency, bill }) => {
           <span className="card-title">Счет в валюте</span>
 
           {CURRENCIES.map(curr => (
-            <p className="currency-line">
+            <p key={curr} className="currency-line">
               <span>{filterCurrency(getBill(curr), curr)}</span>
             </p>
           ))}

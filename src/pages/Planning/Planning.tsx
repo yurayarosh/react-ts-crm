@@ -1,14 +1,12 @@
 import classNames from 'classnames'
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { filterCurrency, getSpentAmount } from '../../assets/scripts/helpers'
-import { useAppDispatch, useAppSelector } from '../../hooks/store'
+import Preloader from '../../components/Preloader/Preloader'
+import { useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
-import { fetchCategories } from '../../store/actions/categories'
-import { fetchRecords } from '../../store/actions/records'
 import { ICategory } from '../../store/actions/types/categories'
 
 const Planning: FC = () => {
-  const dispatch = useAppDispatch()
   const { categories } = useAppSelector(state => state.categoriesReducer)
   const { records } = useAppSelector(state => state.recordsReducer)
   const { user } = useAppSelector(state => state.setUserReducer)
@@ -25,13 +23,6 @@ const Planning: FC = () => {
     return color
   }
 
-  useEffect(() => {
-    if (user?.localId) {
-      dispatch(fetchCategories(user.localId))
-      dispatch(fetchRecords(user.localId))
-    }
-  }, [])
-
   const categoriesList: ICategory[] | null = useMemo(() => {
     if (!categories || !records) return null
 
@@ -46,7 +37,7 @@ const Planning: FC = () => {
     })
   }, [categories, records])
 
-  if (!categoriesList?.length) return <div>loading...</div>
+  if (!categoriesList?.length) return <Preloader />
 
   return (
     <LayoutDafault>

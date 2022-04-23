@@ -3,13 +3,18 @@ import './App.css'
 import AppRouter from './components/AppRouter/AppRouter'
 import Preloader from './components/Preloader/Preloader'
 import { useAppDispatch, useAppSelector } from './hooks/store'
+import { fetchCategories } from './store/actions/categories'
+import { fetchRecords } from './store/actions/records'
 import { fetchUser, setUser } from './store/actions/setUser'
 
 function App() {
   const [isLoaded, setLoaded] = useState<boolean>(false)
   const dispatch = useAppDispatch()
+
   const { user, userInfoName } = useAppSelector(state => state.setUserReducer)
   const { localId } = useAppSelector(state => state.loginReducer)
+  const { records } = useAppSelector(state => state.recordsReducer)
+  const { categories } = useAppSelector(state => state.categoriesReducer)
 
   const setCurrentUser = () => {
     if (userInfoName && user?.localId && user.name && user.email) {
@@ -24,7 +29,12 @@ function App() {
 
   useEffect(() => {
     setCurrentUser()
-    if (user) setLoaded(true)
+    if (user?.localId) {
+      if (!categories) dispatch(fetchCategories(user.localId))
+      if (!records) dispatch(fetchRecords(user.localId))
+
+      setLoaded(true)
+    }
   }, [user])
 
   useEffect(() => {

@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import { FC, useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { filterCurrency, filterDate } from '../../assets/scripts/helpers'
+import Preloader from '../../components/Preloader/Preloader'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
 import { RouteNames } from '../../router'
-import { fetchCategories } from '../../store/actions/categories'
 import { fetchSingleRecord } from '../../store/actions/records'
 import { ExpencesTypes, ITableRecord } from '../../store/actions/types/records'
 
@@ -20,7 +20,6 @@ const RecordPage: FC = () => {
   useEffect(() => {
     if (user?.localId && id) {
       dispatch(fetchSingleRecord(user.localId, id))
-      dispatch(fetchCategories(user.localId))
     }
   }, [])
 
@@ -35,7 +34,7 @@ const RecordPage: FC = () => {
       ...record,
       color,
       typeText,
-      categoryName
+      categoryName,
     }
   }, [record, categories])
 
@@ -49,9 +48,7 @@ const RecordPage: FC = () => {
       </div>
       <div className="row">
         <div className="col s12 m6">
-          {/* <v-preloader v-if="isLoading" /> */}
-
-          {recordData && (
+          {recordData ? (
             <div className="card">
               <div className={classNames('card-content white-text', recordData.color)}>
                 <p>Описание: {recordData.description}</p>
@@ -61,6 +58,8 @@ const RecordPage: FC = () => {
                 <small>{filterDate(new Date(recordData.date))}</small>
               </div>
             </div>
+          ) : (
+            <Preloader />
           )}
         </div>
       </div>
