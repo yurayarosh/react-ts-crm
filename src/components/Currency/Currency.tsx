@@ -1,15 +1,14 @@
 import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import { fetchCurrency } from '../../store/actions/currency'
+import { ICurrencyData } from '../../store/actions/types/currency'
 
-const Currency: FC = () => {
+interface CurrencyProps {
+  currency: ICurrencyData
+}
+
+const Currency: FC<CurrencyProps> = ({ currency }) => {
   const currencies = ['UAH', 'EUR', 'USD']
-  const dispatch = useAppDispatch()
-  const { data: currency } = useAppSelector(state => state.currencyReducer)
-
-  useEffect(() => {
-    dispatch(fetchCurrency())
-  }, [])
 
   return (
     <div className="col s12 m6 l8">
@@ -32,7 +31,7 @@ const Currency: FC = () => {
                 <tr key={curr}>
                   <td>{curr}</td>
                   <td>{currency ? (1 / +currency.rates[curr]).toFixed(4) : ''}</td>
-                  <td>{currency?.date}</td>
+                  <td>{currency.date}</td>
                 </tr>
               ))}
             </tbody>

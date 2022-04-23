@@ -1,16 +1,24 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import Bill from '../../components/Bill/Bill'
 import Currency from '../../components/Currency/Currency'
-import { useAppDispatch } from '../../hooks/store'
+import Preloader from '../../components/Preloader/Preloader'
+import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCurrency } from '../../store/actions/currency'
 
 const Home: FC = () => {
   const dispatch = useAppDispatch()
 
+  const { user } = useAppSelector(state => state.setUserReducer)
+  const { data: currency } = useAppSelector(state => state.currencyReducer)
+
   const refreshData = () => {
     dispatch(fetchCurrency())
   }
+
+  useEffect(() => {
+    dispatch(fetchCurrency())
+  }, [])
 
   return (
     <LayoutDafault>
@@ -26,16 +34,10 @@ const Home: FC = () => {
         </button>
       </div>
 
-      {/*  <v-preloader v-if="isLoading" /> */}
-
       <div className="row">
-        {/* <v-bill :rates="currency.rates" />
+        {user?.bill ? <Bill bill={user.bill} /> : <Preloader />}
 
-          <v-currency :rates="currency.rates" :date="currency.date" /> */}
-
-        <Bill />
-
-        <Currency />
+        {currency ? <Currency currency={currency} /> : <Preloader />}
       </div>
     </LayoutDafault>
   )

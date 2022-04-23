@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import AppRouter from './components/AppRouter/AppRouter'
+import Preloader from './components/Preloader/Preloader'
 import { useAppDispatch, useAppSelector } from './hooks/store'
 import { fetchUser, setUser } from './store/actions/setUser'
 
@@ -44,7 +45,7 @@ function App() {
     }
   }, [])
 
-  if (!isLoaded) return <div>loading...</div>
+  if (!isLoaded) return <Preloader />
 
   return <AppRouter />
 }

@@ -1,0 +1,9 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global(#root) > .wrapper {
+  height: 100vh;
+}

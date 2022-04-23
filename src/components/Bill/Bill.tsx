@@ -1,6 +1,10 @@
 import { FC } from 'react'
 
-const Bill: FC = () => {
+interface BillProps {
+  bill: string | number
+}
+
+const Bill: FC<BillProps> = ({ bill }) => {
   return (
     <div className="col s12 m6 l4">
       <div className="card light-blue bill-card">
