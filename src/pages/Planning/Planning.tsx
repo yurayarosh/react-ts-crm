@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { FC, useEffect, useMemo } from 'react'
-import { filterCurrency } from '../../assets/scripts/helpers'
+import { filterCurrency, getSpentAmount } from '../../assets/scripts/helpers'
 import { useAppDispatch, useAppSelector } from '../../hooks/store'
 import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCategories } from '../../store/actions/categories'
@@ -39,14 +39,7 @@ const Planning: FC = () => {
     return Object.values(categories).map((category, i) => {
       const key = Object.keys(categories)[i]
 
-      const spent: number = Object.values(records).reduce((acc, record) => {
-        if (record.categoryId !== key) return acc
-
-        const INDEX = record.expenseType === ExpencesTypes.INCOME ? 1 : -1
-        const expense = +record.amount * INDEX
-
-        return acc + expense
-      }, 0)
+      const spent: number = Object.values(records).reduce(getSpentAmount(key), 0)
 
       return {
         ...category,

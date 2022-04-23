@@ -4,10 +4,18 @@ export enum ExpencesTypes {
 }
 
 export interface IRecord {
+  id: string
+  date: Date
   categoryId: string
   expenseType: string
   amount: string | number
   description: string
+}
+
+export interface ITableRecord extends IRecord {
+  typeText: string
+  color: string
+  categoryName: string
 }
 
 export interface IRecords {

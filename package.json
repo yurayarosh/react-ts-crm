@@ -12,6 +12,7 @@
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.3",
+    "chart.js": "^3.7.1",
     "classnames": "^2.3.1",
     "materialize-css": "^1.0.0",
     "react": "^17.0.2",
@@ -49,5 +50,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/chart.js": "^2.9.37"
+  }
 }

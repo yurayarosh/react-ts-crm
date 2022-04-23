@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useMemo, useState } from 'react'
-import { showToast } from '../../assets/scripts/helpers'
+import { showToast, UID } from '../../assets/scripts/helpers'
 import { IInputError, simpleInputValidate } from '../../assets/scripts/validation'
 import Form from '../../components/Form/Form'
 import Input from '../../components/UI/Input/Input'
@@ -114,6 +114,8 @@ const Record: FC = () => {
 
     if (isValid && categoryName) {
       const record: IRecord = {
+        id: UID(),
+        date: new Date(),
         expenseType,
         amount,
         description,

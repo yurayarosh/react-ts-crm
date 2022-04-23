@@ -1,5 +1,6 @@
 import { ComponentType } from 'react'
 import Categories from '../pages/Categories/Categories'
+import History from '../pages/History/History'
 import Home from '../pages/Home/Home'
 import Login from '../pages/Login/Login'
 import Planning from '../pages/Planning/Planning'
@@ -39,6 +40,10 @@ export const privateRoutes: IRoute[] = [
   {
     path: RouteNames.HOME,
     Component: Home,
+  },
+  {
+    path: RouteNames.HISTORY,
+    Component: History,
   },
   {
     path: RouteNames.CATEGORIES,
