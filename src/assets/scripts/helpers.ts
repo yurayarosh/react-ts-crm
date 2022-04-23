@@ -1,5 +1,6 @@
 import M from 'materialize-css'
 import { ExpencesTypes, IRecord } from '../../store/actions/types/records'
+import { CURRENCIES } from '../../utils'
 
 export const filterDate = (value: Date, format: String = '') => {
   const options =
@@ -20,11 +21,11 @@ export const filterDate = (value: Date, format: String = '') => {
           day: 'numeric',
         } as const)
 
-  return new Intl.DateTimeFormat('uk-UA', options).format(value)
+  return new Intl.DateTimeFormat('ua-UA', options).format(value)
 }
 
-export const filterCurrency = (value: number) => {
-  return new Intl.NumberFormat('uk-UA', { style: 'currency', currency: 'UAH' }).format(value)
+export const filterCurrency = (value: number, currency: string = CURRENCIES[0]) => {
+  return new Intl.NumberFormat('ua-UA', { style: 'currency', currency }).format(value)
 }
 
 export const UID = () => `uid-${Math.random().toString(36).slice(2, 9)}`

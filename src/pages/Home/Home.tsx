@@ -35,7 +35,7 @@ const Home: FC = () => {
       </div>
 
       <div className="row">
-        {user?.bill ? <Bill bill={user.bill} /> : <Preloader />}
+        {user?.bill && currency ? <Bill currency={currency} bill={user.bill} /> : <Preloader />}
 
         {currency ? <Currency currency={currency} /> : <Preloader />}
       </div>

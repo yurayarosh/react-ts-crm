@@ -1,15 +1,12 @@
-import { FC, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import { fetchCurrency } from '../../store/actions/currency'
+import { FC } from 'react'
 import { ICurrencyData } from '../../store/actions/types/currency'
+import { CURRENCIES } from '../../utils'
 
 interface CurrencyProps {
   currency: ICurrencyData
 }
 
 const Currency: FC<CurrencyProps> = ({ currency }) => {
-  const currencies = ['UAH', 'EUR', 'USD']
-
   return (
     <div className="col s12 m6 l8">
       <div className="card orange darken-3 bill-card">
@@ -27,7 +24,7 @@ const Currency: FC<CurrencyProps> = ({ currency }) => {
             </thead>
 
             <tbody>
-              {currencies.map(curr => (
+              {CURRENCIES.map(curr => (
                 <tr key={curr}>
                   <td>{curr}</td>
                   <td>{currency ? (1 / +currency.rates[curr]).toFixed(4) : ''}</td>
