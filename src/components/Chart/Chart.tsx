@@ -7,6 +7,7 @@ Chart.register(...registerables)
 export interface IChartData {
   labels: string[]
   datasets: Array<{
+    label: string
     data: number[] | string[]
     borderWidth?: number
     backgroundColor: string[]
@@ -27,8 +28,6 @@ const HistoryChart: FC<HistoryChartProps> = ({ data }) => {
         type,
         data,
       }
-
-      console.log({ data })
 
       const chart = new Chart(canvas.current, config)
 

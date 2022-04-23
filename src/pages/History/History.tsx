@@ -26,7 +26,7 @@ const History: FC = () => {
 
   const recordsList: ITableRecord[] | null = useMemo(() => {
     return records && categories
-      ? Object.values(records).map(record => {
+      ? Object.values(records).map((record, i) => {
           const color: string = record.expenseType === ExpencesTypes.INCOME ? 'green' : 'red'
           const typeText: string = record.expenseType === ExpencesTypes.INCOME ? 'Доход' : 'Расход'
           const categoryName: string = categories[record.categoryId].name
@@ -36,6 +36,7 @@ const History: FC = () => {
             color,
             typeText,
             categoryName,
+            recordNameId: Object.keys(records)[i]
           }
         })
       : null
@@ -50,9 +51,9 @@ const History: FC = () => {
       labels: categoriesList.map(category => category.name),
       datasets: [
         {
+          label: 'Расход',
           data: categoriesList.map((category, i) => {
             const key = Object.keys(categories)[i]
-
             const spent: number = Object.values(records).reduce(getSpentAmount(key), 0)
 
             return spent < 0 ? spent * -1 : 0

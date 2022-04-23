@@ -1,6 +1,8 @@
 import classNames from 'classnames'
 import { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { filterCurrency, filterDate } from '../../assets/scripts/helpers'
+import { RouteNames } from '../../router'
 import { ITableRecord } from '../../store/actions/types/records'
 
 interface HistoryTableProps {
@@ -30,9 +32,9 @@ const HistoryTable: FC<HistoryTableProps> = ({ records }) => {
             <td>{record.categoryName}</td>
             <td><span className={classNames('white-text badge', record.color)}>{record.typeText}</span></td>
             <td>
-              <a className="btn-small btn">
+              <Link to={`${RouteNames.RECORDS}/${record.recordNameId}`} className="btn-small btn">
                 <i className="material-icons">open_in_new</i>
-              </a>
+              </Link>
             </td>
           </tr>
         ))}

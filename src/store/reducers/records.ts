@@ -31,6 +31,18 @@ export const recordsReducer = (
         error: action.error,
         records: null,
       }
+    case ActionTypes.FETCH_SINGLE_RECORD_SUCCESS:
+      return {
+        ...state,
+        records: state.records,
+        record: action.record,
+      }
+    case ActionTypes.FETCH_SINGLE_RECORD_ERROR:
+      return {
+        ...state,
+        error: action.error,
+        records: null,
+      }
     // case ActionTypes.UPDATE_CATEGORY_SUCCESS:
     //   return {
     //     ...state,

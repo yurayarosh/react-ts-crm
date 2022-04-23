@@ -6,6 +6,7 @@ import Login from '../pages/Login/Login'
 import Planning from '../pages/Planning/Planning'
 import Profile from '../pages/Profile/Profile'
 import Record from '../pages/Record/Record'
+import RecordPage from '../pages/RecordPage/RecordPage'
 import Register from '../pages/Register/Register'
 
 export interface IRoute {
@@ -23,6 +24,7 @@ export enum RouteNames {
   PLANNING = '/planning',
   PROFILE = '/profile',
   EVENT = '/event',
+  RECORDS = '/records',
 }
 
 export const publicRoutes: IRoute[] = [
@@ -60,5 +62,9 @@ export const privateRoutes: IRoute[] = [
   {
     path: RouteNames.RECORD,
     Component: Record,
+  },
+  {
+    path: `${RouteNames.RECORDS}/:id`,
+    Component: RecordPage,
   },
 ]

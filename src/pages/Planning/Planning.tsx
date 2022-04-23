@@ -6,7 +6,6 @@ import LayoutDafault from '../../layouts/LayoutDefault'
 import { fetchCategories } from '../../store/actions/categories'
 import { fetchRecords } from '../../store/actions/records'
 import { ICategory } from '../../store/actions/types/categories'
-import { ExpencesTypes } from '../../store/actions/types/records'
 
 const Planning: FC = () => {
   const dispatch = useAppDispatch()
@@ -38,7 +37,6 @@ const Planning: FC = () => {
 
     return Object.values(categories).map((category, i) => {
       const key = Object.keys(categories)[i]
-
       const spent: number = Object.values(records).reduce(getSpentAmount(key), 0)
 
       return {

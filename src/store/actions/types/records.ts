@@ -16,6 +16,7 @@ export interface ITableRecord extends IRecord {
   typeText: string
   color: string
   categoryName: string
+  recordNameId?: string
 }
 
 export interface IRecords {
@@ -24,6 +25,7 @@ export interface IRecords {
 
 export interface IRecordsState {
   records: IRecords | null
+  record?: IRecord
   error?: string
 }
 

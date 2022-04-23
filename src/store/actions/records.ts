@@ -58,35 +58,29 @@ export const fetchRecords = (localId: string) => async (dispatch: Dispatch<Actio
   }
 }
 
-// export const updateCategory =
-//   (localId: string, category: { [key: string]: ICategory }) =>
-//   async (dispatch: Dispatch<ActionCategories>) => {
-//     try {
-//       const [categoryName] = Object.keys(category)
-//       const [cat] = Object.values(category)
+export const fetchSingleRecord =
+  (localId: string, recordId: string) => async (dispatch: Dispatch<ActionRecords>) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/records/${recordId}.json`
+      )
 
-//       const response = await fetch(
-//         `${process.env.REACT_APP_FIREBASE_URI}/users/${localId}/categories/${categoryName}.json`,
-//         {
-//           method: 'put',
-//           body: JSON.stringify(cat),
-//         }
-//       )
+      const record: IRecord = await response.json()
 
-//       if (response.ok) {
-//         dispatch({ type: ActionTypes.UPDATE_CATEGORY_SUCCESS, category: cat, categoryName })
-//       } else {
-//         dispatch({
-//           type: ActionTypes.UPDATE_CATEGORY_ERROR,
-//           categories: null,
-//           error: `Update category error ${response.statusText}`,
-//         })
-//       }
-//     } catch (error) {
-//       dispatch({
-//         type: ActionTypes.UPDATE_CATEGORY_ERROR,
-//         categories: null,
-//         error: `Update category server error ${error}`,
-//       })
-//     }
-//   }
+      if (response.ok) {
+        dispatch({ type: ActionTypes.FETCH_SINGLE_RECORD_SUCCESS, record })
+      } else {
+        dispatch({
+          type: ActionTypes.FETCH_SINGLE_RECORD_ERROR,
+          records: null,
+          error: `Fetch single record error ${response.statusText}`,
+        })
+      }
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.FETCH_SINGLE_RECORD_ERROR,
+        records: null,
+        error: `Fetch single record server error ${error}`,
+      })
+    }
+  }
