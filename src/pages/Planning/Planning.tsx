@@ -1,5 +1,7 @@
+import M from 'materialize-css'
+
 import classNames from 'classnames'
-import { FC, useMemo } from 'react'
+import { createRef, FC, RefObject, useEffect, useMemo, useRef } from 'react'
 import { filterCurrency, getSpentAmount } from '../../assets/scripts/helpers'
 import Preloader from '../../components/Preloader/Preloader'
 import { useAppSelector } from '../../hooks/store'
@@ -37,6 +39,38 @@ const Planning: FC = () => {
     })
   }, [categories, records])
 
+  const myRefs = useRef([])
+  myRefs.current =
+    (categoriesList && categoriesList.map((category, i) => myRefs.current[i] ?? createRef())) || []
+
+  useEffect(() => {
+    const divs = myRefs.current.map((ref: RefObject<HTMLDivElement>) => ref.current)
+
+    divs.forEach((div, i) => {
+      if (!div || !categoriesList || M.Tooltip.getInstance(div)) return
+      const category = categoriesList[i]
+
+      const { limit, spent = 0 } = category
+      const balance = +limit - +spent
+
+      const message =
+        balance < 0
+          ? `Лимит превышен на: ${filterCurrency(balance * -1)}`
+          : `Осталось: ${filterCurrency(balance)}`
+
+      M.Tooltip.init(div, {
+        html: `${message}`,
+      })
+    })
+
+    return () => {
+      divs.forEach(div => {
+        const instance = div && M.Tooltip.getInstance(div)
+        if (instance) instance.destroy()
+      })
+    }
+  }, [categoriesList, myRefs])
+
   if (!categoriesList?.length) return <Preloader />
 
   return (
@@ -52,8 +86,8 @@ const Planning: FC = () => {
         <p>Пока нет ни одной записи</p>
       ) : (
         <section>
-          {categoriesList.map(category => (
-            <div key={category.id}>
+          {categoriesList.map((category, i) => (
+            <div key={category.id} ref={myRefs.current[i]}>
               <p>
                 <strong>{category.name}:</strong>&nbsp;
                 {filterCurrency(category.spent || 0)} из {filterCurrency(+category.limit)}

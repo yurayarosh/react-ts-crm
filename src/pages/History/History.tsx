@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo } from 'react'
 import { generateRandomColor, getSpentAmount } from '../../assets/scripts/helpers'
 import HistoryChart, { IChartData } from '../../components/Chart/Chart'
 import HistoryTable from '../../components/HistoryTable/HistoryTable'
@@ -69,16 +69,7 @@ const History: FC = () => {
             {recordsChartData ? <HistoryChart data={recordsChartData} /> : <Preloader />}
           </div>
 
-          <HistoryTable records={recordsList} />
-
-          {/* <v-pagination
-          v-model="page"
-          :pageCount="pageCount"
-          :clickHandler="paginateHandler"
-          :prevText="'Prev'"
-          :nextText="'Next'"
-          :containerClass="'pagination'"
-        /> */}
+          <HistoryTable records={recordsList} itemsPerPage={5} />
         </section>
       )}
     </LayoutDafault>

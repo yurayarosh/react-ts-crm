@@ -1,6 +1,7 @@
 input[type='submit']:not(:disabled),
 input[type='reset']:not(:disabled),
-button:not(:disabled) {
+button:not(:disabled),
+[role="button"] {
   cursor: pointer;
 }
 
